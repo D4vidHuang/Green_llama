@@ -129,29 +129,47 @@ def real_time_monitoring(model, prompt, metric_name, measure_function):
 
 def main():
     console = Console()
-    console.print("[bold green]Ollama Energy Metrics Wrapper[/bold green]")
+    console.print("[bold green]Green Llama[/bold green]")
 
-    available_models = list_available_models()
-    console.print(f"[blue]Available models: {', '.join(available_models)}[/blue]")
-    model = Prompt.ask("Enter model name", default="llama2")
+    while True:  # Main loop to allow restarting without exiting
+        available_models = list_available_models()
+        console.print(f"[blue]Available models: {', '.join(available_models)}[/blue]")
+        model = Prompt.ask("Enter model name", default="llama2")
 
-    if model not in available_models:
-        download_choice = Prompt.ask(f"Model {model} is not available. Do you want to download it? (yes/no)",
-                                     choices=["yes", "no"], default="yes")
-        if download_choice == "yes":
-            download_model(model)
+        if model not in available_models:
+            if model.lower() == "exit":
+                return
+            download_choice = Prompt.ask(f"Model {model} is not available. Do you want to download it? (yes/no)",
+                                         choices=["yes", "no"], default="yes")
+            if download_choice == "yes":
+                try:
+                    download_model(model)
 
-    metric_choice = Prompt.ask("Choose metric: [1] CPU Usage [2] FLOPs/sec", choices=["1", "2"], default="1")
-    metric_name = "CPU Usage (%)" if metric_choice == "1" else "FLOPs/sec"
-    measure_function = measure_cpu_usage if metric_choice == "1" else estimate_flops_per_sec
+                except Exception as e:
+                    if "500" in str(e):
+                        console.print(f"[red]Couldn't find {model} in the Ollama repository[/red]")
+                        continue
+                    else:
+                        console.print(f"[red] Unexpected error: {e} [/red]")
+                        continue
+            else:
+                continue
 
-    while True:
-        prompt = Prompt.ask("Enter your prompt (or type 'exit' to quit)")
-        if prompt.lower() == "exit":
-            console.print("[bold red]Exiting wrapper...[/bold red]")
-            break
-        real_time_monitoring(model, prompt, metric_name, measure_function)
 
+        metric_choice = Prompt.ask("Choose metric: [1] CPU Usage [2] FLOPs/sec", choices=["1", "2"], default="1")
+        metric_name = "CPU Usage (%)" if metric_choice == "1" else "FLOPs/sec"
+        measure_function = measure_cpu_usage if metric_choice == "1" else estimate_flops_per_sec
+
+        while True:  # Inner loop for conversation
+            prompt = Prompt.ask("Enter your prompt (or type 'restart' to change model, 'exit' to quit)")
+            if prompt.lower() == "exit":
+                console.print("[bold red]Exiting wrapper...[/bold red]")
+                return  # Fully exit
+            elif prompt.lower() == "restart":
+                console.print("[bold yellow]Restarting model selection...[/bold yellow]")
+                break  # Exit conversation loop, go back to model selection
+
+            real_time_monitoring(model, prompt, metric_name, measure_function)
 
 if __name__ == "__main__":
     main()
