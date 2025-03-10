@@ -3,6 +3,7 @@ import psutil
 import ollama
 import csv
 import threading
+import pyfiglet
 import matplotlib.pyplot as plt
 from rich.console import Console
 from rich.prompt import Prompt
@@ -22,7 +23,6 @@ def download_model(model_name):
     console.print(f"[yellow]Downloading model {model_name}...[/yellow]")
     ollama.pull(model_name)
     console.print(f"[green]Model {model_name} downloaded successfully![/green]")
-
 
 
 def monitor_cpu_usage(stop_event, cpu_readings):
@@ -75,16 +75,22 @@ def save_metrics_to_csv(metric_name, metric_value, elapsed_time):
         writer.writerow([metric_name, metric_value, elapsed_time])
 
 
-def plot_metrics(metric_name, values, times):
-    """Plot the chosen metric over time."""
+def plot_metrics_bar(metric_name,prompt_data, values):
+    """Plot a bar graph for CPU usage per prompt with dynamic labels (Prompt 1, Prompt 2, etc.)."""
+    # Generate prompt labels as "Prompt 1", "Prompt 2", etc.
+    prompt_labels = [f"Prompt {i+1}" for i in range(len(values))]
+
+    # Plot the bar graph
     plt.figure(figsize=(8, 5))
-    plt.plot(times, values, marker='o', linestyle='-', label=metric_name)
-    plt.xlabel("Inference Number")
-    plt.ylabel(metric_name)
-    plt.title(f"{metric_name} Over Time")
-    plt.legend()
-    plt.savefig("metrics_plot.png")
+    plt.bar(prompt_labels, values, color='skyblue')
+    plt.xlabel("Prompts")
+    plt.ylabel(f"{metric_name}")
+    plt.title(f"{metric_name} per Prompt")
+    plt.xticks(rotation=45, ha="right")
+    plt.tight_layout()
+    plt.savefig("metrics_bar_plot.png")
     plt.show()
+
 
 
 def display_results(response, metric_name, metric_value, elapsed_time):
@@ -100,40 +106,34 @@ def display_results(response, metric_name, metric_value, elapsed_time):
 
     console.print(table)
 
+#TODO: FIX TO MONITOR PER PROMPT
+def real_time_monitoring(model, prompt, metric_name, measure_function, metrics_storage):
+    """Function to monitor and store metrics in the background."""
+    while True:
+        response, metric_value, elapsed_time = measure_function(model, prompt)
+        metrics_storage["prompts"].append(prompt)
+        metrics_storage["values"].append(metric_value)
+        metrics_storage["times"].append(elapsed_time)
+        save_metrics_to_csv(metric_name, metric_value, elapsed_time)
 
-def real_time_monitoring(model, prompt, metric_name, measure_function):
-    console = Console()
-    metric_values = []
-    times = []
-    response, metric_value, elapsed_time = measure_function(model, prompt)
-    display_results(response, metric_name, metric_value, elapsed_time)
+        # The inference response isn't shown during monitoring
+        time.sleep(1)  # Wait before next measurement
 
-    with Live(console=console, refresh_per_second=1) as live:
-        for i in range(5):  # Collect multiple inferences for plotting
-            metric_values.append(metric_value)
-            times.append(i + 1)
-            save_metrics_to_csv(metric_name, metric_value, elapsed_time)
 
-            table = Table(title="Real-Time Inference Metrics")
-            table.add_column("Inference #", style="bold")
-            table.add_column(metric_name, justify="right")
-            table.add_column("Elapsed Time (s)", justify="right")
-
-            for j in range(len(times)):
-                table.add_row(str(times[j]), f"{metric_values[j]:.2f}", f"{elapsed_time:.2f}")
-
-            live.update(table)
-
-    plot_metrics(metric_name, metric_values, times)
+def calculate_average_metric(metrics_storage):
+    """Calculate average of the collected metrics."""
+    if not metrics_storage["values"]:
+        return 0
+    return sum(metrics_storage["values"]) / len(metrics_storage["values"])
 
 
 def main():
     console = Console()
-    console.print("[bold green]Green Llama[/bold green]")
+    ascii_llama = pyfiglet.figlet_format("Green Llama", font="standard", justify="center")
+    console.print(f"[bold green]{ascii_llama}[/bold green]")
 
     while True:  # Main loop to allow restarting without exiting
         available_models = list_available_models()
-        # console.print("[blue]Locally available models:[/blue]")
 
         table = Table()
         table.add_column("Locally Available Models", style="cyan")
@@ -143,7 +143,6 @@ def main():
 
         console.print(table)
         console.print(f"For a full list of available models refer to: https://ollama.com/search")
-        # console.print(f"[blue]Locally available models: {', '.join(available_models)}[/blue]")
         model = Prompt.ask("Enter model name", default="llama2")
 
         if model not in available_models:
@@ -155,7 +154,6 @@ def main():
             if download_choice == "yes":
                 try:
                     download_model(model)
-
                 except Exception as e:
                     if "500" in str(e):
                         console.print(f"[red]Couldn't find {model} in the Ollama repository[/red]")
@@ -166,21 +164,49 @@ def main():
             else:
                 continue
 
-
         metric_choice = Prompt.ask("Choose metric: [1] CPU Usage [2] FLOPs/sec", choices=["1", "2"], default="1")
         metric_name = "CPU Usage (%)" if metric_choice == "1" else "FLOPs/sec"
         measure_function = measure_cpu_usage if metric_choice == "1" else estimate_flops_per_sec
 
+        # Initialize a storage for metrics
+        metrics_storage = {"prompts": [], "values": [], "times": []}
+
+        # Start monitoring in a separate thread
+        monitoring_thread = threading.Thread(target=real_time_monitoring, args=(
+        model, "test prompt", metric_name, measure_function, metrics_storage))
+        monitoring_thread.daemon = True
+        monitoring_thread.start()
+
         while True:  # Inner loop for conversation
-            prompt = Prompt.ask("Enter your prompt (or type 'restart' to change model, 'exit' to quit)")
+            prompt = Prompt.ask(
+                "Enter your prompt (or type 'restart' to change model, 'exit' to quit, 'summary' to view stats)")
+            console.print("Thinking...")
             if prompt.lower() == "exit":
                 console.print("[bold red]Exiting wrapper...[/bold red]")
                 return  # Fully exit
             elif prompt.lower() == "restart":
                 console.print("[bold yellow]Restarting model selection...[/bold yellow]")
                 break  # Exit conversation loop, go back to model selection
+            elif prompt.lower() == "summary":
+                # Calculate and display stats here
+                average_metric = calculate_average_metric(metrics_storage)
 
-            real_time_monitoring(model, prompt, metric_name, measure_function)
+                # Display the table with the overall average
+                table = Table(title="Summary of Metrics")
+                table.add_column("Metric", style="bold")
+                table.add_column("Average Value", justify="right")
+
+                table.add_row(metric_name, f"{average_metric:.2f}")
+                console.print(table)
+
+                # Plot the bar graph for CPU usage per prompt
+                plot_metrics_bar(metric_name, metrics_storage["prompts"], metrics_storage["values"])
+
+            else:
+                # You could also show the model's response if desired
+                response = ollama.chat(model=model, messages=[{"role": "user", "content": prompt}])
+                console.print(response["message"]["content"])
+
 
 if __name__ == "__main__":
     main()
