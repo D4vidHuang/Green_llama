@@ -133,11 +133,22 @@ def main():
 
     while True:  # Main loop to allow restarting without exiting
         available_models = list_available_models()
-        console.print(f"[blue]Available models: {', '.join(available_models)}[/blue]")
+        # console.print("[blue]Locally available models:[/blue]")
+
+        table = Table()
+        table.add_column("Locally Available Models", style="cyan")
+
+        for model in available_models:
+            table.add_row(model)
+
+        console.print(table)
+        console.print(f"For a full list of available models refer to: https://ollama.com/search")
+        # console.print(f"[blue]Locally available models: {', '.join(available_models)}[/blue]")
         model = Prompt.ask("Enter model name", default="llama2")
 
         if model not in available_models:
             if model.lower() == "exit":
+                console.print("[bold red]Exiting wrapper...[/bold red]")
                 return
             download_choice = Prompt.ask(f"Model {model} is not available. Do you want to download it? (yes/no)",
                                          choices=["yes", "no"], default="yes")
