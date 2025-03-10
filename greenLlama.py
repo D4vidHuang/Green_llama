@@ -2,6 +2,7 @@ import time
 import psutil
 import ollama
 import csv
+import threading
 import matplotlib.pyplot as plt
 from rich.console import Console
 from rich.prompt import Prompt
@@ -23,19 +24,36 @@ def download_model(model_name):
     console.print(f"[green]Model {model_name} downloaded successfully![/green]")
 
 
+
+def monitor_cpu_usage(stop_event, cpu_readings):
+    """Continuously monitor CPU usage until stop_event is set."""
+    while not stop_event.is_set():
+        cpu_readings.append(psutil.cpu_percent(interval=0.1))
+
+
 def measure_cpu_usage(model, prompt):
-    """Measure CPU usage while running inference."""
+    """Measure CPU usage continuously while running inference."""
+    stop_event = threading.Event()
+    cpu_readings = []
+
+    # Start CPU monitoring in a separate thread
+    monitor_thread = threading.Thread(target=monitor_cpu_usage, args=(stop_event, cpu_readings))
+    monitor_thread.start()
+
+    # Run inference
     start_time = time.time()
-    process = psutil.Process()
-    cpu_before = process.cpu_percent(interval=None)
-
     response = ollama.chat(model=model, messages=[{"role": "user", "content": prompt}])
-
-    cpu_after = process.cpu_percent(interval=None)
     end_time = time.time()
-    cpu_usage = cpu_after - cpu_before
+
+    # Stop CPU monitoring
+    stop_event.set()
+    monitor_thread.join()
+
+    # Compute average CPU usage
+    avg_cpu_usage = sum(cpu_readings) / len(cpu_readings) if cpu_readings else 0
     elapsed_time = end_time - start_time
-    return response, cpu_usage, elapsed_time
+
+    return response, avg_cpu_usage, elapsed_time
 
 
 def estimate_flops_per_sec(model, prompt):
