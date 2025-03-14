@@ -1,6 +1,7 @@
 import time
 import psutil
 import ollama
+import os
 import csv
 import threading
 import pyfiglet
@@ -82,10 +83,10 @@ def plot_metrics_bar(metric_name,prompt_data, values):
 
     # Plot the bar graph
     plt.figure(figsize=(8, 5))
-    plt.bar(prompt_labels, values, color='skyblue')
-    plt.xlabel("Prompts")
+    plt.plot(prompt_labels, values, color='skyblue')
+    plt.xlabel("Time")
     plt.ylabel(f"{metric_name}")
-    plt.title(f"{metric_name} per Prompt")
+    plt.title(f"{metric_name} over Time")
     plt.xticks(rotation=45, ha="right")
     plt.tight_layout()
     plt.savefig("metrics_bar_plot.png")
@@ -117,7 +118,7 @@ def real_time_monitoring(model, prompt, metric_name, measure_function, metrics_s
         save_metrics_to_csv(metric_name, metric_value, elapsed_time)
 
         # The inference response isn't shown during monitoring
-        time.sleep(1)  # Wait before next measurement
+        time.sleep(0.2)  # Wait before next measurement
 
 
 def calculate_average_metric(metrics_storage):
@@ -201,7 +202,7 @@ def main():
 
                 # Plot the bar graph for CPU usage per prompt
                 plot_metrics_bar(metric_name, metrics_storage["prompts"], metrics_storage["values"])
-
+                continue
             else:
                 # You could also show the model's response if desired
                 response = ollama.chat(model=model, messages=[{"role": "user", "content": prompt}])
