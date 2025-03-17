@@ -10,18 +10,21 @@ import interface
 def main():
     console = Console()
     interface.display_banner()
-
+    model_choice = False
     while True:  # Main loop to allow restarting
-        available_models = models.list_available_models()
-        interface.display_model_list(available_models)
+        while not model_choice: #keep trying to find a model
+            available_models = models.list_available_models()
+            interface.display_model_list(available_models)
 
-        model = Prompt.ask("Enter model name", default="llama2")
+            model = Prompt.ask("Enter model name", default="llama2")
 
-        if model.lower() == "exit":
-            console.print("[bold red]Exiting wrapper...[/bold red]")
-            return
-        elif model not in available_models:
-            models.handle_missing_model(model)
+            if model.lower() == "exit":
+                console.print("[bold red]Exiting wrapper...[/bold red]")
+                return
+            elif model not in available_models:
+                model_choice = models.handle_missing_model(model)
+            else:
+                model_choice = True
 
         metric_name, measure_function = interface.choose_metric()
 
@@ -34,7 +37,7 @@ def main():
 
         while True:
             prompt = Prompt.ask("Enter your prompt ('restart' to change model, 'exit' to quit, 'summary' for stats)")
-
+            console.print("[yellow]Thinking...[/yellow]")
             if prompt.lower() == "exit":
                 console.print("[bold red]Exiting wrapper...[/bold red]")
                 return
@@ -45,7 +48,7 @@ def main():
                 utils.display_summary(metrics_storage, metric_name)
             else:
                 response = ollama.chat(model=model, messages=[{"role": "user", "content": prompt}])
-                console.print(response["message"]["content"])
+                console.print(f"[yellow]{response["message"]["content"]}[/yellow]")
 
 if __name__ == "__main__":
     main()

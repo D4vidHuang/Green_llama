@@ -16,6 +16,7 @@ def display_model_list(models):
     for model in models:
         table.add_row(model)
     console.print(table)
+    console.print("For information about at all available models refer to: https://ollama.com/search")
 
 def choose_metric():
     metric_choice = Prompt.ask("Choose metric: [1] CPU Usage [2] FLOPs/sec", choices=["1", "2"], default="1")

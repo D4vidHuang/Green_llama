@@ -18,8 +18,12 @@ def handle_missing_model(model):
     if download_choice.lower() == "yes":
         try:
             download_model(model)
+            return True
         except Exception as e:
             if "500" in str(e):
                 console.print(f"[red]Couldn't find {model} in the Ollama repository.[/red]")
             else:
                 console.print(f"[red]Unexpected error: {e}[/red]")
+            return False
+
+
