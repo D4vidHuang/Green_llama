@@ -37,16 +37,18 @@ def main():
 
         while True:
             prompt = Prompt.ask("Enter your prompt ('restart' to change model, 'exit' to quit, 'summary' for stats)")
-            console.print("[yellow]Thinking...[/yellow]")
             if prompt.lower() == "exit":
                 console.print("[bold red]Exiting wrapper...[/bold red]")
                 return
             elif prompt.lower() == "restart":
+                model_choice = False
                 console.print("[bold yellow]Restarting model selection...[/bold yellow]")
+
                 break
             elif prompt.lower() == "summary":
                 utils.display_summary(metrics_storage, metric_name)
             else:
+                console.print("[yellow]Thinking...[/yellow]")
                 response = ollama.chat(model=model, messages=[{"role": "user", "content": prompt}])
                 console.print(f"[yellow]{response["message"]["content"]}[/yellow]")
 

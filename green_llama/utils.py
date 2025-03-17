@@ -4,11 +4,14 @@ from rich.console import Console
 from rich.table import Table
 
 console = Console()
-
 def save_metrics_to_csv(metric_name, metric_value, elapsed_time):
     with open("metrics.csv", mode="a", newline="") as file:
         writer = csv.writer(file)
         writer.writerow([metric_name, metric_value, elapsed_time])
+
+#TODO: Implement make a report
+def make_report():
+    return 0
 
 def calculate_average_metric(metrics_storage):
     if not metrics_storage["values"]:
@@ -23,6 +26,7 @@ def plot_metrics(metric_name, values):
     plt.title(f"{metric_name} over Time")
     plt.show()
 
+#TODO: Better summaries
 def display_summary(metrics_storage, metric_name):
     avg_metric = calculate_average_metric(metrics_storage)
     table = Table(title="Summary of Metrics")

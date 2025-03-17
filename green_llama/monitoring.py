@@ -27,6 +27,7 @@ def measure_cpu_usage(model, prompt):
 
     return response, avg_cpu_usage, elapsed_time
 
+#TODO: Verify estimations
 def estimate_flops_per_sec(model, prompt):
     start_time = time.time()
     response = ollama.chat(model=model, messages=[{"role": "user", "content": prompt}])
@@ -37,6 +38,7 @@ def estimate_flops_per_sec(model, prompt):
     flops_per_sec = estimated_flops / elapsed_time if elapsed_time > 0 else 0
     return response, flops_per_sec, elapsed_time
 
+#TODO: Implement live monitoring with matplotlib.animations (option)
 def real_time_monitoring(model, metric_name, measure_function, metrics_storage):
     while True:
         response, metric_value, elapsed_time = measure_function(model, "test prompt")
