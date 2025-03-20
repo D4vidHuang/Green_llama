@@ -2,10 +2,10 @@ from rich.console import Console
 from rich.prompt import Prompt
 import threading
 import ollama
-import models
-import monitoring
-import utils
-import interface
+from . import models
+from . import monitoring
+from . import utils
+from . import interface
 
 def main():
     console = Console()
