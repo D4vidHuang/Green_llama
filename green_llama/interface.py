@@ -18,9 +18,9 @@ def display_model_list(models):
     console.print(table)
     console.print("For information about all available models refer to: https://ollama.com/search")
 
-def choose_metric():
-    metric_choice = Prompt.ask("Choose metric: [1] CPU Usage [2] FLOPs/sec", choices=["1", "2"], default="1")
-    return ("CPU Usage (%)", monitoring.measure_cpu_usage) if metric_choice == "1" else ("FLOPs/sec", monitoring.estimate_flops_per_sec)
+# def choose_metric():
+#     metric_choice = Prompt.ask("Choose metric: [1] CPU Usage [2] FLOPs/sec", choices=["1", "2"], default="1")
+#     return ("CPU Usage (%)", monitoring.measure_cpu_usage) if metric_choice == "1" else ("FLOPs/sec", monitoring.estimate_flops_per_sec)
 
 #TODO: Implement external profiler support
 def external_profiler():

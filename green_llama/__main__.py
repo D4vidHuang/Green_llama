@@ -26,7 +26,7 @@ def main():
             else:
                 model_choice = True
 
-        metric_name, measure_function = interface.choose_metric()
+        metric_name, measure_function = ("CPU Usage (%)", monitoring.measure_cpu_usage) # interface.choose_metric()
 
         metrics_storage = {"prompts": [], "values": [], "times": []}
 
