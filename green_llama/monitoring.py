@@ -2,7 +2,7 @@ import time
 import psutil
 import threading
 import ollama
-import utils
+from . import utils
 
 def monitor_cpu_usage(stop_event, cpu_readings):
     while not stop_event.is_set():
