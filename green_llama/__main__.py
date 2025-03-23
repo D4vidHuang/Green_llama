@@ -30,12 +30,11 @@ def main():
             else:
                 model_choice = True
 
-        metric_name, measure_function = ("CPU Usage (%)", monitoring.measure_cpu_usage)
+        metric_name, measure_function = interface.choose_metric()
+        metrics_storage = {"prompts": [], "values": [], "times": []}
+        monitoring_thread = threading.Thread(target=monitoring.real_time_monitoring,
+                                             args=(model, metric_name, measure_function, metrics_storage))
 
-        monitoring_thread = threading.Thread(
-            target=monitoring.real_time_monitoring,
-            args=(model, metric_name, measure_function, metrics_storage)
-        )
         monitoring_thread.daemon = True
         monitoring_thread.start()
 
