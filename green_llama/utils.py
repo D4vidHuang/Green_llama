@@ -2,6 +2,7 @@ import csv
 import matplotlib.pyplot as plt
 from rich.console import Console
 from rich.table import Table
+from datasets import load_dataset
 
 console = Console()
 def save_metrics_to_csv(metric_name, metric_value, elapsed_time):
@@ -35,3 +36,8 @@ def display_summary(metrics_storage, metric_name):
     table.add_row(metric_name, f"{avg_metric:.2f}")
     console.print(table)
     plot_metrics(metric_name, metrics_storage["values"])
+
+def load_benchmark_dataset(task_name="text-generation", num_samples=1000):
+    ds = load_dataset("wikitext", "wikitext-2-raw-v1", split="test")
+    prompts = ds["text"][:num_samples]
+    return [p.strip() for p in prompts if len(p.strip()) > 10]
