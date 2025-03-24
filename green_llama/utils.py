@@ -2,7 +2,6 @@ import csv
 import matplotlib.pyplot as plt
 from rich.console import Console
 from rich.table import Table
-
 console = Console()
 def save_metrics_to_csv(metric_name, metric_value, elapsed_time):
     with open("metrics.csv", mode="a", newline="") as file:
@@ -21,7 +20,7 @@ def calculate_average_metric(metrics_storage):
 def plot_metrics(metric_name, values):
     plt.figure(figsize=(8, 5))
     plt.plot(range(len(values)), values, color='skyblue')
-    plt.xlabel("Inference Runs")
+    plt.xlabel("Time")
     plt.ylabel(metric_name)
     plt.title(f"{metric_name} over Time")
     plt.show()
@@ -35,3 +34,11 @@ def display_summary(metrics_storage, metric_name):
     table.add_row(metric_name, f"{avg_metric:.2f}")
     console.print(table)
     plot_metrics(metric_name, metrics_storage["values"])
+
+def save_all_metrics_to_csv(metrics_storage):
+    with open("all_metrics.csv", mode="w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(["Metric Name", "Prompt", "Value", "Elapsed Time"])
+        for metric_name, data in metrics_storage.items():
+            for prompt, value, elapsed_time in zip(data["prompts"], data["values"], data["times"]):
+                writer.writerow([metric_name, prompt, value, elapsed_time])
