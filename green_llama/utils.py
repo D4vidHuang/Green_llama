@@ -53,3 +53,9 @@ def save_all_metrics_to_csv(model, metrics_storage):
         for metric_name, data in metrics_storage.items():
             for prompt, value, elapsed_time in zip(data["prompts"], data["values"], data["times"]):
                 writer.writerow([metric_name, prompt, value, elapsed_time])
+
+def clear_metrics_storage(metrics_storage):
+    for metric in metrics_storage:
+        metrics_storage[metric]["prompts"].clear()
+        metrics_storage[metric]["values"].clear()
+        metrics_storage[metric]["times"].clear()

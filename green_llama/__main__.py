@@ -44,10 +44,13 @@ def main():
                 if prompt.lower() == "exit":
                     console.print("[bold red]Exiting wrapper...[/bold red]")
                     utils.save_all_metrics_to_csv(model, metrics_storage)
+                    utils.clear_metrics_storage(metrics_storage)
                     return
                 elif prompt.lower() == "restart":
                     model_choice = False
                     console.print("[bold yellow]Restarting model selection...[/bold yellow]")
+                    utils.save_all_metrics_to_csv(model,metrics_storage)
+                    utils.clear_metrics_storage(metrics_storage)
                     break
                 elif prompt.lower() == "summary":
                     utils.display_summary(metrics_storage)
