@@ -32,6 +32,24 @@ def choose_metric():
     }
     return metrics
 
+def display_ranking(metrics_storage):
+    ranking = []
+    for metric_name, data in metrics_storage.items():
+        avg_metric = sum(data["values"]) / len(data["values"]) if data["values"] else 0
+        ranking.append((metric_name, avg_metric))
+
+    ranking.sort(key=lambda x: x[1], reverse=True)
+
+    table = Table(title="Ranking of Metrics")
+    table.add_column("Rank", style="bold")
+    table.add_column("Metric", style="bold")
+    table.add_column("Average Value per Prompt", justify="right")
+
+    for rank, (metric_name, avg_metric) in enumerate(ranking, start=1):
+        table.add_row(str(rank), metric_name, f"{avg_metric:.2f}")
+
+    console.print(table)
+
 #TODO: Implement external profiler support
 def external_profiler():
     console.print("[red]This has not been implemented yet[/red]")
