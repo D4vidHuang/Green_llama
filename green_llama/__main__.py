@@ -43,15 +43,14 @@ def main():
                     "Enter your prompt ('restart' to change model, 'exit' to quit, 'summary' for stats)")
                 if prompt.lower() == "exit":
                     console.print("[bold red]Exiting wrapper...[/bold red]")
-                    utils.save_all_metrics_to_csv(metrics_storage)
+                    utils.save_all_metrics_to_csv(model, metrics_storage)
                     return
                 elif prompt.lower() == "restart":
                     model_choice = False
                     console.print("[bold yellow]Restarting model selection...[/bold yellow]")
                     break
                 elif prompt.lower() == "summary":
-                    for metric_name, storage in metrics_storage.items():
-                        utils.display_summary(storage, metric_name)
+                    utils.display_summary(metrics_storage)
                 else:
                     console.print("[yellow]Thinking...[/yellow]")
                     response, metrics_data = test_all(model, prompt)
