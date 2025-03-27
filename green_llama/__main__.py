@@ -57,7 +57,7 @@ def main():
                 break
             elif prompt.lower() == "summary":
                 utils.display_summary(metrics_storage)
-                utils.display_summary(metrics_storage, metric_name)
+                utils.display_summary(metrics_storage)
 
             elif prompt.lower() == "benchmark":
                 prompts = utils.load_benchmark_dataset()
