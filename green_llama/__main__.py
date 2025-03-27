@@ -33,11 +33,11 @@ def main():
         # metric_name, measure_function = ("CPU Usage (%)", monitoring.measure_cpu_usage) # interface.choose_metric()
         metric_name, measure_function = interface.choose_metric()
         metrics_storage = {"prompts": [], "values": [], "times": []}
-        monitoring_thread = threading.Thread(target=monitoring.real_time_monitoring,
-                                             args=(model, metric_name, measure_function, metrics_storage))
+        # monitoring_thread = threading.Thread(target=monitoring.real_time_monitoring,
+        #                                      args=(model, metric_name, measure_function, metrics_storage))
 
-        monitoring_thread.daemon = True
-        monitoring_thread.start()
+        # monitoring_thread.daemon = True
+        # monitoring_thread.start()
 
         while True:
             prompt = Prompt.ask(
@@ -69,7 +69,9 @@ def main():
 
             else:
                 console.print("[yellow]Thinking...[/yellow]")
-                response = ollama.chat(model=model, messages=[{"role": "user", "content": prompt}])
+                response = monitoring.chat_monitoring(
+                    model, metric_name, measure_function, metrics_storage, prompt
+                )
                 console.print(f"[yellow]{response['message']['content']}[/yellow]")
 
 

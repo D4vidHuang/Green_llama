@@ -46,3 +46,14 @@ def real_time_monitoring(model, metric_name, measure_function, metrics_storage):
         metrics_storage["times"].append(elapsed_time)
         utils.save_metrics_to_csv(metric_name, metric_value, elapsed_time)
         time.sleep(0.2)
+
+def chat_monitoring(model, metric_name, measure_function, metrics_storage, prompt):
+    """
+    Executes the monitoring logic once based on the provided prompt.
+    Updates metrics_storage with the results.
+    """
+    response, metric_value, elapsed_time = measure_function(model, prompt)
+    metrics_storage["values"].append(metric_value)
+    metrics_storage["times"].append(elapsed_time)
+    utils.save_metrics_to_csv(metric_name, metric_value, elapsed_time)
+    return response
