@@ -23,22 +23,32 @@ def display_model_list(models):
     console.print("For information about all available models refer to: https://ollama.com/search")
 
 def choose_metric():
-    metric_choice = Prompt.ask(
-        "Choose metric: [1] CPU Energy [2] GPU Energy [3] RAM Energy [4] Total Energy [5] Carbon Emissions",
-        choices=["1", "2", "3", "4", "5"],
-        default="1"
-    )
-    if metric_choice == "1":
-        return "CPU Usage (%)", monitoring.measure_cpu_usage
-    else:
-        metrics = {
-        "1": ("CPU Energy (kWh)", test_cpu),
-        "2": ("GPU Energy (kWh)", test_gpu),
-        "3": ("RAM Energy (kWh)", test_ram),
-        "4": ("Total Energy (kWh)", test_total_energy),
-        "5": ("Carbon Emissions (kgCO2)", test_emissions)
+    metrics = {
+        "CPU Energy (kWh)": test_cpu,
+        "GPU Energy (kWh)": test_gpu,
+        "RAM Energy (kWh)": test_ram,
+        "Total Energy (kWh)": test_total_energy,
+        "Carbon Emissions (kgCO2)": test_emissions
     }
-    return metrics[metric_choice]
+    return metrics
+
+def display_ranking(metrics_storage):
+    ranking = []
+    for metric_name, data in metrics_storage.items():
+        avg_metric = sum(data["values"]) / len(data["values"]) if data["values"] else 0
+        ranking.append((metric_name, avg_metric))
+
+    ranking.sort(key=lambda x: x[1], reverse=True)
+
+    table = Table(title="Ranking of Metrics")
+    table.add_column("Rank", style="bold")
+    table.add_column("Metric", style="bold")
+    table.add_column("Average Value per Prompt", justify="right")
+
+    for rank, (metric_name, avg_metric) in enumerate(ranking, start=1):
+        table.add_row(str(rank), metric_name, f"{avg_metric:.2f}")
+
+    console.print(table)
 
 #TODO: Implement external profiler support
 def external_profiler():
