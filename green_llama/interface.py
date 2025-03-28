@@ -24,11 +24,11 @@ def display_model_list(models):
 
 def choose_metric():
     metrics = {
-        "CPU Energy (Wh)": test_cpu,
-        "GPU Energy (Wh)": test_gpu,
-        "RAM Energy (Wh)": test_ram,
-        "Total Energy (Wh)": test_total_energy,
-        "Carbon Emissions (kgCO2)": test_emissions
+        "CPU Energy (J)": test_cpu,
+        "GPU Energy (J)": test_gpu,
+        "RAM Energy (J)": test_ram,
+        "Total Energy (J)": test_total_energy,
+        "Carbon Emissions (gCO2)": test_emissions
     }
     return metrics
 

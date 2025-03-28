@@ -54,16 +54,18 @@ class EmissionsTracker:
         """Calculate carbon emissions based on energy consumption
 
         Args:
-            energy_consumed: Energy consumption in kWh
+            energy_consumed: Energy consumption in joules (J)
+            (e.g., 1 kWh = 3.6e6 J)
 
         Returns:
-            CarbonEmissions: Object containing emissions data
+            CarbonEmissions: Object containing emissions data in gCO2 
         """
         # Get carbon intensity (gCO2/kWh)
         carbon_intensity = self.get_carbon_intensity()
         
-        # Calculate emissions (convert gCO2/kWh to kgCO2/kWh)
-        emissions = energy_consumed * (carbon_intensity / 1000.0)
+        # Calculate emissions (convert gCO2/J to gCO2/kWh)
+        # emissions = energy_consumed * (carbon_intensity / 1000.0)
+        emissions = energy_consumed * carbon_intensity / (3600 * 1000)
         
         return CarbonEmissions(
             energy_consumed=energy_consumed,
