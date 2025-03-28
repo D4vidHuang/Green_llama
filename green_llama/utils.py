@@ -44,7 +44,7 @@ def display_summary(metrics_storage):
         avg_metric = sum(data["values"]) / len(data["values"]) if data["values"] else 0
         table.add_row(f"Average {metric_name}", f"{avg_metric:.2f}")
 
-        if metric_name == "Total Energy (kWh)":
+        if metric_name == "Total Energy (Wh)":
             total_energy = sum(data["values"])
             for prompt, value in zip(data["prompts"], data["values"]):
                 if value > most_costly_prompt[1]:
@@ -59,7 +59,7 @@ def display_summary(metrics_storage):
 
     avg_response_time = total_time / num_prompts if num_prompts else 0
 
-    table.add_row("Total Energy (kWh)", f"{total_energy:.2f}")
+    table.add_row("Total Energy (Wh)", f"{total_energy:.2f}")
     table.add_row("Total CO2 Emissions (kgCO2)", f"{total_co2:.2f}")
     table.add_row("Average Response Time (s)", f"{avg_response_time:.2f}")
     table.add_row("Number of Prompts", str(int(num_prompts/5)))

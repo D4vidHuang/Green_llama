@@ -74,10 +74,10 @@ def measure_all_metrics(func):
         energy = energy_tracker.stop()
         emissions = emissions_tracker.compute_emissions(energy.total)
         return result, {
-            "CPU Energy (kWh)": energy.cpu,
-            "GPU Energy (kWh)": energy.gpu,
-            "RAM Energy (kWh)": energy.ram,
-            "Total Energy (kWh)": energy.total,
+            "CPU Energy (Wh)": energy.cpu,
+            "GPU Energy (Wh)": energy.gpu,
+            "RAM Energy (Wh)": energy.ram,
+            "Total Energy (Wh)": energy.total,
             "Carbon Emissions (kgCO2)": emissions.emissions,
             "elapsed_time": end_time - start_time
         }
