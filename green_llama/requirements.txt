@@ -1,0 +1,10 @@
+psutil
+pynvml
+rich
+pyfiglet
+matplotlib
+ollama
+datasets
+requests
+unittest
+numpy
