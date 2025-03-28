@@ -31,11 +31,40 @@ def plot_metrics(metric_name, values):
 def display_summary(metrics_storage):
     table = Table(title="Summary of Metrics for this Conversation")
     table.add_column("Metric", style="bold")
-    table.add_column("Average Value per Prompt", justify="right")
+    table.add_column("Value", justify="right")
+
+    total_energy = 0
+    total_co2 = 0
+    total_time = 0
+    num_prompts = 0
+    most_costly_prompt = ("", 0)
+    least_costly_prompt = ("", float("inf"))
 
     for metric_name, data in metrics_storage.items():
         avg_metric = sum(data["values"]) / len(data["values"]) if data["values"] else 0
-        table.add_row(metric_name, f"{avg_metric:.2f}")
+        table.add_row(f"Average {metric_name}", f"{avg_metric:.2f}")
+
+        if metric_name == "Total Energy (kWh)":
+            total_energy = sum(data["values"])
+            for prompt, value in zip(data["prompts"], data["values"]):
+                if value > most_costly_prompt[1]:
+                    most_costly_prompt = (prompt, value)
+                if value < least_costly_prompt[1]:
+                    least_costly_prompt = (prompt, value)
+        elif metric_name == "Carbon Emissions (kgCO2)":
+            total_co2 = sum(data["values"])
+
+        total_time += sum(data["times"])
+        num_prompts += len(data["prompts"])
+
+    avg_response_time = total_time / num_prompts if num_prompts else 0
+
+    table.add_row("Total Energy (kWh)", f"{total_energy:.2f}")
+    table.add_row("Total CO2 Emissions (kgCO2)", f"{total_co2:.2f}")
+    table.add_row("Average Response Time (s)", f"{avg_response_time:.2f}")
+    table.add_row("Number of Prompts", str(int(num_prompts/5)))
+    table.add_row("Most Costly Prompt", most_costly_prompt[0][:25] + "..." if len(most_costly_prompt[0]) > 25 else most_costly_prompt[0])
+    table.add_row("Least Costly Prompt", least_costly_prompt[0][:25] + "..." if len(most_costly_prompt[0]) > 25 else most_costly_prompt[0])
 
     console.print(table)
 

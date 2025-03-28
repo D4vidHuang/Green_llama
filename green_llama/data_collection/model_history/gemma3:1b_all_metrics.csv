@@ -9,3 +9,88 @@ GPU Energy (kWh),bye,0.0,1.3228585720062256
 RAM Energy (kWh),bye,1.9028783647126346,1.3228585720062256
 Total Energy (kWh),bye,3.115155598313251,1.3228585720062256
 Carbon Emissions (kgCO2),bye,1.1681833493674691,1.3228585720062256
+CPU Energy (kWh),hi!,2.1663315296173096,2.6263275146484375
+CPU Energy (kWh),how are you?,2.326306462287903,2.538334369659424
+CPU Energy (kWh),Why is the number 42 so fascinating?,18.031258177757262,21.85659432411194
+CPU Energy (kWh),what are you best at?,9.749565446376803,11.8179292678833
+CPU Energy (kWh),what is up big dawg,2.1036012589931485,3.278740882873535
+GPU Energy (kWh),hi!,0.0,2.6263275146484375
+GPU Energy (kWh),how are you?,0.0,2.538334369659424
+GPU Energy (kWh),Why is the number 42 so fascinating?,0.0,21.85659432411194
+GPU Energy (kWh),what are you best at?,0.0,11.8179292678833
+GPU Energy (kWh),what is up big dawg,0.0,3.278740882873535
+RAM Energy (kWh),hi!,3.6271266752055458,2.6263275146484375
+RAM Energy (kWh),how are you?,3.5541651400982626,2.538334369659424
+RAM Energy (kWh),Why is the number 42 so fascinating?,27.744097014284755,21.85659432411194
+RAM Energy (kWh),what are you best at?,15.0013319605765,11.8179292678833
+RAM Energy (kWh),what is up big dawg,4.213936631085162,3.278740882873535
+Total Energy (kWh),hi!,5.793458204822855,2.6263275146484375
+Total Energy (kWh),how are you?,5.880471602386166,2.538334369659424
+Total Energy (kWh),Why is the number 42 so fascinating?,45.775355192042014,21.85659432411194
+Total Energy (kWh),what are you best at?,24.750897406953303,11.8179292678833
+Total Energy (kWh),what is up big dawg,6.317537890078311,3.278740882873535
+Carbon Emissions (kgCO2),hi!,2.1725468268085706,2.6263275146484375
+Carbon Emissions (kgCO2),how are you?,2.205176850894812,2.538334369659424
+Carbon Emissions (kgCO2),Why is the number 42 so fascinating?,17.165758197015755,21.85659432411194
+Carbon Emissions (kgCO2),what are you best at?,9.28158652760749,11.8179292678833
+Carbon Emissions (kgCO2),what is up big dawg,2.3690767087793665,3.278740882873535
+CPU Energy (kWh),hi!,52.647978246212,1.8532350063323975
+CPU Energy (kWh),What is your purpose,6.885769987106323,8.34675931930542
+CPU Energy (kWh),hablas espanol?,1.0638699531555176,1.4510889053344727
+CPU Energy (kWh),genial!,1.6119000713030496,1.758862018585205
+GPU Energy (kWh),hi!,0.0,1.8532350063323975
+GPU Energy (kWh),What is your purpose,0.0,8.34675931930542
+GPU Energy (kWh),hablas espanol?,0.0,1.4510889053344727
+GPU Energy (kWh),genial!,0.0,1.758862018585205
+RAM Energy (kWh),hi!,2.3696082931991214,1.8532350063323975
+RAM Energy (kWh),What is your purpose,10.621592591411057,8.34675931930542
+RAM Energy (kWh),hablas espanol?,1.8461976493621532,1.4510889053344727
+RAM Energy (kWh),genial!,2.232159307089132,1.758862018585205
+Total Energy (kWh),hi!,55.01758653941112,1.8532350063323975
+Total Energy (kWh),What is your purpose,17.50736257851738,8.34675931930542
+Total Energy (kWh),hablas espanol?,2.910067602517671,1.4510889053344727
+Total Energy (kWh),genial!,3.8440593783921817,1.758862018585205
+Carbon Emissions (kgCO2),hi!,20.63159495227917,1.8532350063323975
+Carbon Emissions (kgCO2),What is your purpose,6.565260966944018,8.34675931930542
+Carbon Emissions (kgCO2),hablas espanol?,1.0912753509441266,1.4510889053344727
+Carbon Emissions (kgCO2),genial!,1.4415222668970682,1.758862018585205
+CPU Energy (kWh),hi!,1.5300959050655365,1.855102300643921
+CPU Energy (kWh),dobry den,1.4539754033088685,1.7627863883972168
+CPU Energy (kWh),what is 42,4.806739711761474,5.826796531677246
+GPU Energy (kWh),hi!,0.0,1.855102300643921
+GPU Energy (kWh),dobry den,0.0,1.7627863883972168
+GPU Energy (kWh),what is 42,0.0,5.826796531677246
+RAM Energy (kWh),hi!,2.3661681510962396,1.855102300643921
+RAM Energy (kWh),dobry den,2.242818798884883,1.7627863883972168
+RAM Energy (kWh),what is 42,7.395970462562182,5.826796531677246
+Total Energy (kWh),hi!,3.896264056161776,1.855102300643921
+Total Energy (kWh),dobry den,3.696794202193751,1.7627863883972168
+Total Energy (kWh),what is 42,12.202710174323656,5.826796531677246
+Carbon Emissions (kgCO2),hi!,1.461099021060666,1.855102300643921
+Carbon Emissions (kgCO2),dobry den,1.3862978258226568,1.7627863883972168
+Carbon Emissions (kgCO2),what is 42,4.576016315371371,5.826796531677246
+CPU Energy (kWh),dobry den,1.1474429567654927,1.7884719371795654
+CPU Energy (kWh),josken,12.777677297592163,17.424619913101196
+GPU Energy (kWh),dobry den,0.0,1.7884719371795654
+GPU Energy (kWh),josken,0.0,17.424619913101196
+RAM Energy (kWh),dobry den,2.2699700991721516,1.7884719371795654
+RAM Energy (kWh),josken,22.11816027756687,17.424619913101196
+Total Energy (kWh),dobry den,3.4174130559376446,1.7884719371795654
+Total Energy (kWh),josken,34.895837575159035,17.424619913101196
+Carbon Emissions (kgCO2),dobry den,1.2815298959766168,1.7884719371795654
+Carbon Emissions (kgCO2),josken,13.085939090684638,17.424619913101196
+CPU Energy (kWh),hi what is up or down or left or right or given or ungiven. Who is trump and why. Viva la vida baby,13.941615517934164,19.011693477630615
+GPU Energy (kWh),hi what is up or down or left or right or given or ungiven. Who is trump and why. Viva la vida baby,0.0,19.011693477630615
+RAM Energy (kWh),hi what is up or down or left or right or given or ungiven. Who is trump and why. Viva la vida baby,24.193725672181305,19.011693477630615
+Total Energy (kWh),hi what is up or down or left or right or given or ungiven. Who is trump and why. Viva la vida baby,38.13534119011547,19.011693477630615
+Carbon Emissions (kgCO2),hi what is up or down or left or right or given or ungiven. Who is trump and why. Viva la vida baby,14.3007529462933,19.011693477630615
+CPU Energy (kWh),"for metric_name, data in metrics_storage.items():E        avg_metric = sum(data[""values""]) / len(data[""values""]) if data[""values""] else 0E        table.add_row(f""Average {metric_name}"", f""{avg_metric:.2f}"")EE        if metric_name == ""Total Energy (kWh)"":E            total_energy = sum(data[""values""])E            for prompt, value in zip(data[""prompts""], data[""values""]):E                if value > most_costly_prompt[1]:E                    most_costly_prompt = (prompt, value)E                if value < least_costly_prompt[1]:E                    least_costly_prompt = (prompt, value)E        elif metric_name == ""Carbon Emissions (kgCO2)"":E            total_co2 = sum(data[""values""])EE        total_time += sum(data[""times""])E        num_prompts += len(data[""prompts""])E",29.432587391138078,35.67633843421936
+GPU Energy (kWh),"for metric_name, data in metrics_storage.items():E        avg_metric = sum(data[""values""]) / len(data[""values""]) if data[""values""] else 0E        table.add_row(f""Average {metric_name}"", f""{avg_metric:.2f}"")EE        if metric_name == ""Total Energy (kWh)"":E            total_energy = sum(data[""values""])E            for prompt, value in zip(data[""prompts""], data[""values""]):E                if value > most_costly_prompt[1]:E                    most_costly_prompt = (prompt, value)E                if value < least_costly_prompt[1]:E                    least_costly_prompt = (prompt, value)E        elif metric_name == ""Carbon Emissions (kgCO2)"":E            total_co2 = sum(data[""values""])EE        total_time += sum(data[""times""])E        num_prompts += len(data[""prompts""])E",0.0,35.67633843421936
+RAM Energy (kWh),"for metric_name, data in metrics_storage.items():E        avg_metric = sum(data[""values""]) / len(data[""values""]) if data[""values""] else 0E        table.add_row(f""Average {metric_name}"", f""{avg_metric:.2f}"")EE        if metric_name == ""Total Energy (kWh)"":E            total_energy = sum(data[""values""])E            for prompt, value in zip(data[""prompts""], data[""values""]):E                if value > most_costly_prompt[1]:E                    most_costly_prompt = (prompt, value)E                if value < least_costly_prompt[1]:E                    least_costly_prompt = (prompt, value)E        elif metric_name == ""Carbon Emissions (kgCO2)"":E            total_co2 = sum(data[""values""])EE        total_time += sum(data[""times""])E        num_prompts += len(data[""prompts""])E",45.74323454132329,35.67633843421936
+Total Energy (kWh),"for metric_name, data in metrics_storage.items():E        avg_metric = sum(data[""values""]) / len(data[""values""]) if data[""values""] else 0E        table.add_row(f""Average {metric_name}"", f""{avg_metric:.2f}"")EE        if metric_name == ""Total Energy (kWh)"":E            total_energy = sum(data[""values""])E            for prompt, value in zip(data[""prompts""], data[""values""]):E                if value > most_costly_prompt[1]:E                    most_costly_prompt = (prompt, value)E                if value < least_costly_prompt[1]:E                    least_costly_prompt = (prompt, value)E        elif metric_name == ""Carbon Emissions (kgCO2)"":E            total_co2 = sum(data[""values""])EE        total_time += sum(data[""times""])E        num_prompts += len(data[""prompts""])E",75.17582193246136,35.67633843421936
+Carbon Emissions (kgCO2),"for metric_name, data in metrics_storage.items():E        avg_metric = sum(data[""values""]) / len(data[""values""]) if data[""values""] else 0E        table.add_row(f""Average {metric_name}"", f""{avg_metric:.2f}"")EE        if metric_name == ""Total Energy (kWh)"":E            total_energy = sum(data[""values""])E            for prompt, value in zip(data[""prompts""], data[""values""]):E                if value > most_costly_prompt[1]:E                    most_costly_prompt = (prompt, value)E                if value < least_costly_prompt[1]:E                    least_costly_prompt = (prompt, value)E        elif metric_name == ""Carbon Emissions (kgCO2)"":E            total_co2 = sum(data[""values""])EE        total_time += sum(data[""times""])E        num_prompts += len(data[""prompts""])E",28.19093322467301,35.67633843421936
+CPU Energy (kWh),hi,1.6391864776611331,1.987299919128418
+GPU Energy (kWh),hi,0.0,1.987299919128418
+RAM Energy (kWh),hi,2.5602800062022952,1.987299919128418
+Total Energy (kWh),hi,4.199466483863429,1.987299919128418
+Carbon Emissions (kgCO2),hi,1.5747999314487857,1.987299919128418
