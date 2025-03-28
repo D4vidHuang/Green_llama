@@ -83,11 +83,9 @@ def measure_all_metrics(func):
         }
     return wrapper
 
-
 @measure_all_metrics
 def test_all(model: str, prompt: str):
     return ollama.chat(model=model, messages=[{"role": "user", "content": prompt}])
-
 
 @measure_cpu_energy
 def test_cpu(model: str, prompt: str):
