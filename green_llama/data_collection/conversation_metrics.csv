@@ -1,11 +1,6 @@
 Metric Name,Prompt,Value,Elapsed Time
-CPU Energy (kWh),hi!,1.689632534980774,1.8436546325683594
-CPU Energy (kWh),what is the number 42 famous for? Write a short story about it,23.52310384511948,28.51333713531494
-GPU Energy (kWh),hi!,0.0,1.8436546325683594
-GPU Energy (kWh),what is the number 42 famous for? Write a short story about it,0.0,28.51333713531494
-RAM Energy (kWh),hi!,2.3987403360442987,1.8436546325683594
-RAM Energy (kWh),what is the number 42 famous for? Write a short story about it,37.01474103155826,28.51333713531494
-Total Energy (kWh),hi!,4.088372871025072,1.8436546325683594
-Total Energy (kWh),what is the number 42 famous for? Write a short story about it,60.53784487667774,28.51333713531494
-Carbon Emissions (kgCO2),hi!,1.533139826634402,1.8436546325683594
-Carbon Emissions (kgCO2),what is the number 42 famous for? Write a short story about it,22.70169182875415,28.51333713531494
+CPU Energy (J),hi,40.352980613708496,2.1556079387664795
+GPU Energy (J),hi,24.955473107099532,2.1556079387664795
+RAM Energy (J),hi,9.079925204967218,2.1556079387664795
+Total Energy (J),hi,74.38837892577524,2.1556079387664795
+Carbon Emissions (gCO2),hi,0.007748789471434921,2.1556079387664795

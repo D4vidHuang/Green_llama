@@ -61,13 +61,14 @@ def main():
             elif prompt.lower() == "benchmark":
                 prompts = utils.load_benchmark_dataset()
                 console.print(f"[bold green]Running benchmark on {len(prompts)} prompts...[/bold green]")
-                results = run_benchmark(model, prompts, metric_name, measure_function)
-
-                metrics_storage["prompts"].extend(results["prompts"])
-                metrics_storage["values"].extend(results["values"])
-                metrics_storage["times"].extend(results["times"])
-                utils.display_summary(metrics_storage, metric_name)
-                save_logs(metrics_storage)
+                for metric_name, measure_function in metrics.items():
+                    results = run_benchmark(model, prompts, metric_name, measure_function)
+                    metrics_storage[metric_name]["prompts"].extend(results["prompts"])
+                    metrics_storage[metric_name]["values"].extend(results["values"])
+                    metrics_storage[metric_name]["times"].extend(results["times"])
+                    utils.display_summary(metrics_storage)
+                    save_logs(metrics_storage)
+                break
 
             else:
                 console.print("[yellow]Thinking...[/yellow]")
