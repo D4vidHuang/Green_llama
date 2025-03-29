@@ -41,30 +41,39 @@ def display_summary(metrics_storage):
     least_costly_prompt = ("", float("inf"))
 
     for metric_name, data in metrics_storage.items():
-        avg_metric = sum(data["values"]) / len(data["values"]) if data["values"] else 0
-        table.add_row(f"Average {metric_name}", f"{avg_metric:.2f}")
+        if not data["values"]:
+            continue
+            
+        avg_metric = sum(data["values"]) / len(data["values"])
+        if avg_metric > 0: 
+            table.add_row(f"Average {metric_name}", f"{avg_metric:.2f}")
 
-        if metric_name == "Total Energy (J)":
-            total_energy = sum(data["values"])
-            for prompt, value in zip(data["prompts"], data["values"]):
-                if value > most_costly_prompt[1]:
-                    most_costly_prompt = (prompt, value)
-                if value < least_costly_prompt[1]:
-                    least_costly_prompt = (prompt, value)
-        elif metric_name == "Carbon Emissions (gCO2)":
-            total_co2 = sum(data["values"])
+            if metric_name == "Total Energy (J)":
+                total_energy = sum(data["values"])
+                for prompt, value in zip(data["prompts"], data["values"]):
+                    if value > most_costly_prompt[1]:
+                        most_costly_prompt = (prompt, value)
+                    if value < least_costly_prompt[1]:
+                        least_costly_prompt = (prompt, value)
+            elif metric_name == "Carbon Emissions (gCO2)":
+                total_co2 = sum(data["values"])
 
-        total_time += sum(data["times"])
-        num_prompts += len(data["prompts"])
+            total_time += sum(data["times"])
+            num_prompts += len(data["prompts"])
 
-    avg_response_time = total_time / num_prompts if num_prompts else 0
-
-    table.add_row("Total Energy (J)", f"{total_energy:.2f}")
-    table.add_row("Total CO2 Emissions (gCO2)", f"{total_co2:.2f}")
-    table.add_row("Average Response Time (s)", f"{avg_response_time:.2f}")
-    table.add_row("Number of Prompts", str(int(num_prompts/5)))
-    table.add_row("Most Costly Prompt", most_costly_prompt[0][:25] + "..." if len(most_costly_prompt[0]) > 25 else most_costly_prompt[0])
-    table.add_row("Least Costly Prompt", least_costly_prompt[0][:25] + "..." if len(most_costly_prompt[0]) > 25 else most_costly_prompt[0])
+    if num_prompts > 0:  
+        avg_response_time = total_time / num_prompts
+        table.add_row("Average Response Time (s)", f"{avg_response_time:.2f}")
+        table.add_row("Number of Prompts", str(int(num_prompts/5)))
+        
+        if total_energy > 0:
+            table.add_row("Total Energy (J)", f"{total_energy:.2f}")
+        if total_co2 > 0:
+            table.add_row("Total CO2 Emissions (gCO2)", f"{total_co2:.2f}")
+        if most_costly_prompt[0]:  
+            table.add_row("Most Costly Prompt", most_costly_prompt[0][:25] + "..." if len(most_costly_prompt[0]) > 25 else most_costly_prompt[0])
+        if least_costly_prompt[0]:
+            table.add_row("Least Costly Prompt", least_costly_prompt[0][:25] + "..." if len(least_costly_prompt[0]) > 25 else least_costly_prompt[0])
 
     console.print(table)
 
@@ -161,10 +170,39 @@ def rank_models_by_co2(data_collection_folder):
         table.add_row(str(rank), model_name, f"{avg_co2:.2f}")
 
 def load_benchmark_dataset(task_name="text-generation", num_samples=1000):
-    ds = load_dataset("wikitext", "wikitext-2-raw-v1", split="test")
-    prompts = ds["text"][:num_samples]
-    return [p.strip() for p in prompts if len(p.strip()) > 10]
-    console.print(table)
+    if task_name == "text-generation":
+        ds = load_dataset("wikitext", "wikitext-2-raw-v1", split="test")
+        prompts = ds["text"][:num_samples]
+        return [p.strip() for p in prompts if len(p.strip()) > 10]
+    elif task_name == "code-generation":
+        
+        code_prompts = [
+            "Write a Python function to sort a list",
+            "Create a JavaScript class for a binary tree",
+            "Implement a C++ function to reverse a string",
+            "Write a SQL query to find duplicate records",
+            "Create a Java method to calculate factorial",
+            "Write a Python decorator for timing functions",
+            "Implement a JavaScript promise-based API call",
+            "Create a C++ template class for a stack",
+            "Write a SQL stored procedure for user authentication",
+            "Implement a Java interface for a database connection"
+        ]
+        return code_prompts
+    else:  # chat-testing
+        chat_prompts = [
+            "Hello, please introduce yourself", # 
+            "What's the weather like today?",
+            "Can you help me with my homework?",
+            "Tell me a joke",
+            "What's your favorite color?",
+            "How do you feel about artificial intelligence?",
+            "Can you explain quantum computing?",
+            "What's your opinion on climate change?",
+            "Tell me about your capabilities",
+            "What's the meaning of life?"
+        ]
+        return chat_prompts
 
 def read_co2_emissions_from_csv(file_path):
     co2_values = []

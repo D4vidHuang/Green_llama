@@ -59,10 +59,28 @@ def main():
                 utils.display_summary(metrics_storage)
 
             elif prompt.lower() == "benchmark":
-                prompts = utils.load_benchmark_dataset()
-                console.print(f"[bold green]Running benchmark on {len(prompts)} prompts...[/bold green]")
+                console.print("\n[bold]Choose benchmark type:[/bold]")
+                console.print("1. Text Generation")
+                console.print("2. Code Generation")
+                console.print("3. Chat Testing")
+                
+                benchmark_type = Prompt.ask("Enter option number", choices=["1", "2", "3"], default="1")
+                
+                if benchmark_type == "1":
+                    prompts = utils.load_benchmark_dataset(task_name="text-generation")
+                    console.print(f"[bold green]Running text generation benchmark with {len(prompts)} prompts...[/bold green]")
+                    task_name = "text-generation"
+                elif benchmark_type == "2":
+                    prompts = utils.load_benchmark_dataset(task_name="code-generation")
+                    console.print(f"[bold green]Running code generation benchmark with {len(prompts)} prompts...[/bold green]")
+                    task_name = "code-generation"
+                else:
+                    prompts = utils.load_benchmark_dataset(task_name="chat-testing")
+                    console.print(f"[bold green]Running chat testing benchmark with {len(prompts)} prompts...[/bold green]")
+                    task_name = "chat-testing"
+                
                 for metric_name, measure_function in metrics.items():
-                    results = run_benchmark(model, prompts, metric_name, measure_function)
+                    results = run_benchmark(model, prompts, metric_name, measure_function, task_name)
                     metrics_storage[metric_name]["prompts"].extend(results["prompts"])
                     metrics_storage[metric_name]["values"].extend(results["values"])
                     metrics_storage[metric_name]["times"].extend(results["times"])
