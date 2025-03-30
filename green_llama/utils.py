@@ -40,6 +40,10 @@ def display_summary(metrics_storage):
     most_costly_prompt = ("", 0)
     least_costly_prompt = ("", float("inf"))
 
+    if not metrics_storage:
+        console.print("[yellow]No metrics data available yet[/yellow]")
+        return
+
     for metric_name, data in metrics_storage.items():
         if not data["values"]:
             continue
@@ -64,7 +68,7 @@ def display_summary(metrics_storage):
     if num_prompts > 0:  
         avg_response_time = total_time / num_prompts
         table.add_row("Average Response Time (s)", f"{avg_response_time:.2f}")
-        table.add_row("Number of Prompts", str(int(num_prompts/5)))
+        table.add_row("Number of Prompts", str(num_prompts))
         
         if total_energy > 0:
             table.add_row("Total Energy (J)", f"{total_energy:.2f}")

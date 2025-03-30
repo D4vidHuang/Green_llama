@@ -81,12 +81,14 @@ def main():
                 
                 for metric_name, measure_function in metrics.items():
                     results = run_benchmark(model, prompts, metric_name, measure_function, task_name)
-                    metrics_storage[metric_name]["prompts"].extend(results["prompts"])
-                    metrics_storage[metric_name]["values"].extend(results["values"])
-                    metrics_storage[metric_name]["times"].extend(results["times"])
+                    for metric, data in results.items():
+                        if metric not in metrics_storage:
+                            metrics_storage[metric] = {"prompts": [], "values": [], "times": []}
+                        metrics_storage[metric]["prompts"].extend(data["prompts"])
+                        metrics_storage[metric]["values"].extend(data["values"])
+                        metrics_storage[metric]["times"].extend(data["times"])
                     utils.display_summary(metrics_storage)
-                    save_logs(metrics_storage,model)
-                    utils.clear_metrics_storage(metrics_storage)
+                    save_logs(metrics_storage, model)
                 break
 
             else:

@@ -5,45 +5,47 @@ import json
 import multiprocessing
 import os
 import csv
+from .metrics.metrics import test_all
+from . import monitoring
 
 console = Console()
 
 def run_benchmark(model: str, prompts: list, metric_name: str, measure_function, task_name: str = "text-generation"):
     prompts = prompts[:2] # In total we have 678, but it takes too long.
-    metrics_storage = {"prompts": [], "cpu_usages": [], "times": []}
-
-    cpu_count = multiprocessing.cpu_count()
+    metrics_storage = {}
 
     console.print(f"[bold green]Starting benchmark on model: {model} using first {len(prompts)} prompts[/bold green]")
     for i, prompt in enumerate(prompts):
-        response, cpu_usage, elapsed_time = measure_function(model, prompt)
-        normalized_cpu_usage = cpu_usage / cpu_count
-        metrics_storage["prompts"].append(prompt)
-        metrics_storage["cpu_usages"].append(normalized_cpu_usage)
-        metrics_storage["times"].append(elapsed_time)
-        console.print(f"[blue]Prompt {i+1}/{len(prompts)}[/blue] - Time: {elapsed_time:.2f}s - CPU: {normalized_cpu_usage:.2f}%")
+        response, metrics_data = test_all(model, prompt)
+        for metric_name, value in metrics_data.items():
+            if metric_name != "elapsed_time":
+                if metric_name not in metrics_storage:
+                    metrics_storage[metric_name] = {"prompts": [], "values": [], "times": []}
+                metrics_storage[metric_name]["prompts"].append(prompt)
+                metrics_storage[metric_name]["values"].append(value)
+                metrics_storage[metric_name]["times"].append(metrics_data["elapsed_time"])
+        console.print(f"[blue]Prompt {i+1}/{len(prompts)}[/blue] - Time: {metrics_data['elapsed_time']:.2f}s")
+
     if task_name == "text-generation":
         novel_prompts = [
-            "请生成一个科幻故事的开头", # Please generate the beginning of a science fiction story
-            "未来の世界についての詩を書く",
-            "Verzin een humoristische grap",
-            "Veuillez donner une idée d'entreprise innovante",
-            "Describe an abstract art picture"
+            "Generate the beginning of a science fiction story",
+            # "Write a poem about the future world",
+            # "Tell a humorous joke",
+            # "Suggest an innovative business idea",
+            # "Describe an abstract art picture"
         ]
-        novel_metrics = {"novel_prompts": [], "novel_cpu_usages": [], "novel_times": []}
 
         console.print(f"[bold green]Starting novel benchmark tests on model: {model}[/bold green]")
         for i, prompt in enumerate(novel_prompts):
-            response, cpu_usage, elapsed_time = measure_function(model, prompt)
-            normalized_cpu_usage = cpu_usage / cpu_count
-            novel_metrics["novel_prompts"].append(prompt)
-            novel_metrics["novel_cpu_usages"].append(normalized_cpu_usage)
-            novel_metrics["novel_times"].append(elapsed_time)
-            console.print(f"[magenta]Novel Prompt {i+1}/{len(novel_prompts)}[/magenta] - Time: {elapsed_time:.2f}s - CPU: {normalized_cpu_usage:.2f}%")
-
-        metrics_storage.update(novel_metrics)
-
-    metrics_storage["values"] = metrics_storage["cpu_usages"]
+            response, metrics_data = test_all(model, prompt)
+            for metric_name, value in metrics_data.items():
+                if metric_name != "elapsed_time":
+                    if metric_name not in metrics_storage:
+                        metrics_storage[metric_name] = {"prompts": [], "values": [], "times": []}
+                    metrics_storage[metric_name]["prompts"].append(prompt)
+                    metrics_storage[metric_name]["values"].append(value)
+                    metrics_storage[metric_name]["times"].append(metrics_data["elapsed_time"])
+            console.print(f"[magenta]Novel Prompt {i+1}/{len(novel_prompts)}[/magenta] - Time: {metrics_data['elapsed_time']:.2f}s")
 
     return metrics_storage
 
@@ -53,7 +55,8 @@ def save_logs(metrics_storage, model, filename="benchmark_log.csv"):
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-    file_path = os.path.join(directory, f"{model}_{filename}")
+    safe_model_name = model.replace(":", "_")
+    file_path = os.path.join(directory, f"{safe_model_name}_{filename}")
     file_exists = os.path.exists(file_path)
 
     with open(file_path, mode="a" if file_exists else "w", newline="") as file:
