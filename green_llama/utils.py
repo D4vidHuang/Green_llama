@@ -149,25 +149,71 @@ def display_ranking(data_collection_folder):
 
     console.print(table)
 
+# def rank_models_by_co2(data_collection_folder):
+#     model_averages = []
+#     for file_name in os.listdir(data_collection_folder):
+#
+#         if file_name.endswith("_all_metrics.csv"):
+#             file_path = os.path.join(data_collection_folder, file_name)
+#             model_name = file_name.replace("_all_metrics.csv", "")
+#             co2_values = read_co2_emissions_from_csv(file_path)
+#             avg_co2 = calculate_average(co2_values)
+#             model_averages.append((model_name, avg_co2))
+#
+#     model_averages.sort(key=lambda x: x[1])
+#
+#     table = Table(title="Model Ranking by Average CO2 Emissions")
+#     table.add_column("Rank", style="bold")
+#     table.add_column("Model", style="bold")
+#     table.add_column("Average CO2 Emissions (gCO2)", justify="right")
+#
+#     for rank, (model_name, avg_co2) in enumerate(model_averages, start=1):
+#         table.add_row(str(rank), model_name, f"{avg_co2:.2f}")
+#     console.print(table)
+
+
 def rank_models_by_co2(data_collection_folder):
-    model_averages = []
-    for file_name in os.listdir(data_collection_folder):
+    benchmark_results_folder = os.path.join(data_collection_folder, "benchmark_results")
+    model_history_folder = os.path.join(data_collection_folder, "model_history")
+
+    model_averages = {}
+    ranked_models = []
+
+    # Process benchmark_results directory first
+    for file_name in os.listdir(benchmark_results_folder):
         if file_name.endswith("_all_metrics.csv"):
-            file_path = os.path.join(data_collection_folder, file_name)
+            file_path = os.path.join(benchmark_results_folder, file_name)
             model_name = file_name.replace("_all_metrics.csv", "")
             co2_values = read_co2_emissions_from_csv(file_path)
             avg_co2 = calculate_average(co2_values)
-            model_averages.append((model_name, avg_co2))
+            model_averages[model_name] = avg_co2
 
-    model_averages.sort(key=lambda x: x[1])
+    # Process model_history directory and add models not in benchmark_results
+    for file_name in os.listdir(model_history_folder):
+        if file_name.endswith("_all_metrics.csv"):
+            file_path = os.path.join(model_history_folder, file_name)
+            model_name = file_name.replace("_all_metrics.csv", "")
+            if model_name not in model_averages:
+                co2_values = read_co2_emissions_from_csv(file_path)
+                avg_co2 = calculate_average(co2_values)
+                model_averages[model_name] = avg_co2
+                ranked_models.append((model_name + " (Not Benchmarked) ", avg_co2))
+            else:
+                ranked_models.append((model_name, model_averages[model_name]))
 
+    # Sort models by average CO2 emissions
+    ranked_models.sort(key=lambda x: x[1])
+
+    # Display the ranking
     table = Table(title="Model Ranking by Average CO2 Emissions")
     table.add_column("Rank", style="bold")
     table.add_column("Model", style="bold")
     table.add_column("Average CO2 Emissions (kgCO2)", justify="right")
 
-    for rank, (model_name, avg_co2) in enumerate(model_averages, start=1):
+    for rank, (model_name, avg_co2) in enumerate(ranked_models, start=1):
         table.add_row(str(rank), model_name, f"{avg_co2:.2f}")
+
+    console.print(table)
 
 def load_benchmark_dataset(task_name="text-generation", num_samples=1000):
     if task_name == "text-generation":
