@@ -85,7 +85,8 @@ def main():
                     metrics_storage[metric_name]["values"].extend(results["values"])
                     metrics_storage[metric_name]["times"].extend(results["times"])
                     utils.display_summary(metrics_storage)
-                    save_logs(metrics_storage)
+                    save_logs(metrics_storage,model)
+                    utils.clear_metrics_storage(metrics_storage)
                 break
 
             else:

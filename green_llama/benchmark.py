@@ -3,6 +3,8 @@ from rich.console import Console
 import ollama
 import json
 import multiprocessing
+import os
+import csv
 
 console = Console()
 
@@ -46,7 +48,20 @@ def run_benchmark(model: str, prompts: list, metric_name: str, measure_function,
     return metrics_storage
 
 
-def save_logs(metrics_storage, filename="benchmark_log.json"):
-    with open(filename, "w", encoding="utf-8") as f:
-        json.dump(metrics_storage, f, indent=2, ensure_ascii=False)
-    print(f"[green]Log saved to {filename}[/green]")
+def save_logs(metrics_storage, model, filename="benchmark_log.csv"):
+    directory = "data_collection/benchmark_results"
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    file_path = os.path.join(directory, f"{model}_{filename}")
+    file_exists = os.path.exists(file_path)
+
+    with open(file_path, mode="a" if file_exists else "w", newline="") as file:
+        writer = csv.writer(file)
+        if not file_exists:
+            writer.writerow(["Metric Name", "Prompt", "Value", "Elapsed Time"])
+        for metric_name, data in metrics_storage.items():
+            for prompt, value, elapsed_time in zip(data["prompts"], data["values"], data["times"]):
+                writer.writerow([metric_name, prompt, value, elapsed_time])
+
+    print(f"[green]Log saved to {file_path}[/green]")
