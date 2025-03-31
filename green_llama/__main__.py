@@ -5,6 +5,7 @@ import threading
 import ollama
 
 from green_llama.metrics.metrics import test_all
+from green_llama.utils import clear_terminal
 from . import models
 from . import monitoring
 from . import utils

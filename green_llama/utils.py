@@ -153,7 +153,7 @@ def display_ranking(data_collection_folder):
 
     ranking.sort(key=lambda x: x[1], reverse=True)
 
-    table = Table(title="Ranking of Metrics Across All Models")
+    table = Table(title="Ranking of Metrics per Prompt Across All Models")
     table.add_column("Rank", style="bold")
     table.add_column("Metric", style="bold")
     table.add_column("Average Value per Prompt", justify="right")
@@ -197,7 +197,8 @@ def rank_models_by_co2(data_collection_folder):
     ranked_models.sort(key=lambda x: x[1])
 
     # Display the ranking
-    table = Table(title="Model Ranking by Average CO2 Emissions")
+    console.print(" ")
+    table = Table(title="Model Ranking by Average CO2 Emissions per Prompt")
     table.add_column("Rank", style="bold")
     table.add_column("Model", style="bold")
     table.add_column("Average CO2 Emissions (kgCO2)", justify="right")
@@ -206,6 +207,7 @@ def rank_models_by_co2(data_collection_folder):
         table.add_row(str(rank), model_name, f"{avg_co2:.2f}")
 
     console.print(table)
+    console.print(" ")
 
 def load_benchmark_dataset(task_name="text-generation", num_samples=1000):
     if task_name == "text-generation":
@@ -253,4 +255,7 @@ def read_co2_emissions_from_csv(file_path):
 
 def calculate_average(values):
     return sum(values) / len(values) if values else 0
+
+def clear_terminal():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
