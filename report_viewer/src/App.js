@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import BenchmarkReport from './components/BenchmarkReport';
-import NormalReport from './components/NormalReport'; // 👈 Add this
+import ConversationReport from './components/ConversationReport'; 
+import ModelHistoryReport from './components/ModelHistoryReport';
 
 import './App.css';
 
@@ -12,8 +13,9 @@ function Home() {
       <p className="home-subtitle">Choose a report type:</p>
 
       <div className="button-container">
-        <Link to="/normal" className="home-button">🧪 Normal Usage Report</Link>
+        <Link to="/normal" className="home-button">🧪 Conversation Report</Link>
         <Link to="/benchmark" className="home-button">📊 Benchmark Report</Link>
+        <Link to="/history" className="home-button">📚 Model History Report</Link>
       </div>
     </div>
   );
@@ -25,7 +27,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/benchmark" element={<BenchmarkReport />} />
-        <Route path="/normal" element={<NormalReport />} />
+        <Route path="/normal" element={<ConversationReport />} />
+        <Route path="/history" element={<ModelHistoryReport />} />
       </Routes>
     </Router>
   );
