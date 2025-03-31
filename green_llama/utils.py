@@ -1,5 +1,6 @@
 import csv
 import os
+import platform
 import matplotlib.pyplot as plt
 from rich.console import Console
 from rich.table import Table
@@ -82,8 +83,14 @@ def display_summary(metrics_storage):
     console.print(table)
 
 def save_all_metrics_to_csv(model, metrics_storage):
+    system = platform.system()
+
     file_path = f"green_llama/data_collection/model_history/{model}_all_metrics.csv"
     out_path = "green_llama/data_collection/conversation_metrics.csv"
+    if system == "Windows":
+        file_path = file_path.replace("/", "\\").replace(":", "_")
+        out_path = out_path.replace("/", "\\")
+
     file_exists = os.path.exists(file_path)
 
     with open(file_path, mode="a" if file_exists else "w", newline="") as file:
