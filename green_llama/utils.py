@@ -70,7 +70,7 @@ def display_summary(metrics_storage):
     if num_prompts > 0:  
         avg_response_time = total_time / num_prompts
         table.add_row("Average Response Time (s)", f"{avg_response_time:.2f}")
-        table.add_row("Number of Prompts", str(num_prompts))
+        table.add_row("Number of Prompts", str(int(num_prompts/4)))
         
         if total_energy > 0:
             table.add_row("Total Energy (J)", f"{total_energy:.2f}")
@@ -162,28 +162,6 @@ def display_ranking(data_collection_folder):
         table.add_row(str(rank), metric_name, f"{avg_metric:.2f}")
 
     console.print(table)
-
-# def rank_models_by_co2(data_collection_folder):
-#     model_averages = []
-#     for file_name in os.listdir(data_collection_folder):
-#
-#         if file_name.endswith("_all_metrics.csv"):
-#             file_path = os.path.join(data_collection_folder, file_name)
-#             model_name = file_name.replace("_all_metrics.csv", "")
-#             co2_values = read_co2_emissions_from_csv(file_path)
-#             avg_co2 = calculate_average(co2_values)
-#             model_averages.append((model_name, avg_co2))
-#
-#     model_averages.sort(key=lambda x: x[1])
-#
-#     table = Table(title="Model Ranking by Average CO2 Emissions")
-#     table.add_column("Rank", style="bold")
-#     table.add_column("Model", style="bold")
-#     table.add_column("Average CO2 Emissions (gCO2)", justify="right")
-#
-#     for rank, (model_name, avg_co2) in enumerate(model_averages, start=1):
-#         table.add_row(str(rank), model_name, f"{avg_co2:.2f}")
-#     console.print(table)
 
 
 def rank_models_by_co2(data_collection_folder):
