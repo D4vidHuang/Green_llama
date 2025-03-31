@@ -12,6 +12,7 @@ from . import utils
 from . import interface
 
 def main():
+    clear_terminal()
     console = Console()
     interface.display_banner()
     model_choice = False
@@ -61,6 +62,12 @@ def main():
                 utils.display_summary(metrics_storage)
 
             elif prompt.lower() == "benchmark":
+
+                benchmark_names = {
+                    1: "chat_benchmark",
+                    2: "code_benchmark",
+                    3: "text_benchmark"
+                }
                 console.print("\n[bold]Choose benchmark type:[/bold]")
                 console.print("1. Text Generation")
                 console.print("2. Code Generation")
@@ -90,7 +97,7 @@ def main():
                         metrics_storage[metric]["values"].extend(data["values"])
                         metrics_storage[metric]["times"].extend(data["times"])
                     utils.display_summary(metrics_storage)
-                    save_logs(metrics_storage, model)
+                    save_logs(metrics_storage, model, benchmark_names[int(benchmark_type)])
                 break
 
             else:
