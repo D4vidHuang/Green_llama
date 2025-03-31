@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from rich.console import Console
 from rich.table import Table
 from datasets import load_dataset
+import re
 
 console = Console()
 
@@ -83,33 +84,35 @@ def display_summary(metrics_storage):
     console.print(table)
 
 def save_all_metrics_to_csv(model, metrics_storage):
+
     system = platform.system()
 
     file_path = f"green_llama/data_collection/model_history/{model}_all_metrics.csv"
     out_path = "green_llama/data_collection/conversation_metrics.csv"
     if system == "Windows":
-        file_path = file_path.replace("/", "\\").replace(":", "_")
-        out_path = out_path.replace("/", "\\")
+        safe_model = re.sub(r'[\\/:*?"<>|]', '_', model.replace('.', '_'))
+        file_path = f"green_llama/data_collection/model_history/{safe_model}_all_metrics.csv"
 
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+    def write_metrics(writer):
+        for metric_name, data in metrics_storage.items():
+            for prompt, value, elapsed_time in zip(data["prompts"], data["values"], data["times"]):
+                writer.writerow([metric_name, prompt, value, elapsed_time])
+
+    # Save model-specific
     file_exists = os.path.exists(file_path)
-
-    with open(file_path, mode="a" if file_exists else "w", newline="") as file:
+    with open(file_path, mode="a" if file_exists else "w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         if not file_exists:
             writer.writerow(["Metric Name", "Prompt", "Value", "Elapsed Time"])
-        for metric_name, data in metrics_storage.items():
-            for prompt, value, elapsed_time in zip(data["prompts"], data["values"], data["times"]):
-                writer.writerow([metric_name, prompt, value, elapsed_time])
+        write_metrics(writer)
 
-    with open(out_path, mode="w", newline="") as file:
+    # Save conversation log
+    with open(out_path, mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow(["Metric Name", "Prompt", "Value", "Elapsed Time"])
-
-    with open(out_path, mode="a", newline="") as file:
-        writer = csv.writer(file)
-        for metric_name, data in metrics_storage.items():
-            for prompt, value, elapsed_time in zip(data["prompts"], data["values"], data["times"]):
-                writer.writerow([metric_name, prompt, value, elapsed_time])
+        write_metrics(writer)
 
 def clear_metrics_storage(metrics_storage):
     for metric in metrics_storage:

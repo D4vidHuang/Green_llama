@@ -1,0 +1,11 @@
+Metric Name,Prompt,Value,Elapsed Time
+CPU Energy (J),Write a Python function to sort a list,150.3292399406433,41.78181600570679
+CPU Energy (J),Create a JavaScript class for a binary tree,83.08001498222352,25.641979932785034
+GPU Energy (J),Write a Python function to sort a list,2248.9671876342295,41.78181600570679
+GPU Energy (J),Create a JavaScript class for a binary tree,1451.3104222157,25.641979932785034
+RAM Energy (J),Write a Python function to sort a list,277.9018896342935,41.78181600570679
+RAM Energy (J),Create a JavaScript class for a binary tree,169.42725324872706,25.641979932785034
+Total Energy (J),Write a Python function to sort a list,2677.1983172091664,41.78181600570679
+Total Energy (J),Create a JavaScript class for a binary tree,1703.8176904466507,25.641979932785034
+Carbon Emissions (gCO2),Write a Python function to sort a list,0.27887482470928815,41.78181600570679
+Carbon Emissions (gCO2),Create a JavaScript class for a binary tree,0.17748100942152611,25.641979932785034

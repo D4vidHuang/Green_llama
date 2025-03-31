@@ -51,7 +51,7 @@ def run_benchmark(model: str, prompts: list, metric_name: str, measure_function,
 
 
 def save_logs(metrics_storage, model, filename="benchmark_log.csv"):
-    directory = "data_collection/benchmark_results"
+    directory = "green_llama/data_collection/benchmark_results"
     if not os.path.exists(directory):
         os.makedirs(directory)
 

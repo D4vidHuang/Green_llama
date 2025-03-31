@@ -49,6 +49,7 @@ def main():
                 utils.save_all_metrics_to_csv(model, metrics_storage)
                 utils.clear_metrics_storage(metrics_storage)
                 return
+
             elif prompt.lower() == "restart":
                 model_choice = False
                 console.print("[bold yellow]Restarting model selection...[/bold yellow]")
@@ -96,6 +97,7 @@ def main():
                 response, metrics_data = test_all(model, prompt)
                 monitoring.record_metrics(prompt, metrics_data, metrics_storage)
                 console.print(f"[yellow]{response['message']['content']}[/yellow]")
+
 
 if __name__ == "__main__":
     main()
