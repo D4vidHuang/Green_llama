@@ -7,6 +7,9 @@ from rich.table import Table
 from datasets import load_dataset
 import re
 
+import subprocess
+from rich import print
+
 console = Console()
 
 def save_metrics_to_csv(metric_name, metric_value, elapsed_time):
@@ -289,3 +292,37 @@ def calculate_average(values):
 def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+def launch_report_viewer():
+    viewer_dir = os.path.join(os.getcwd(),"report_viewer")
+    npm_cmd = "npm.cmd" if os.name == "nt" else "npm"
+    node_modules = os.path.join(viewer_dir, "node_modules")
+
+    try:
+        print(f"[bold green]Launching report viewer from {viewer_dir}...[/bold green]")
+
+        if not os.path.exists(node_modules):
+            print("[yellow]⚠ node_modules not found. Running npm install...[/yellow]")
+            install_process = subprocess.run(
+                [npm_cmd, "install"],
+                cwd=viewer_dir,
+                shell=True
+            )
+            if install_process.returncode != 0:
+                print("[red]❌ npm install failed. Cannot start the viewer.[/red]")
+                return None
+            print("[green]✅ npm install completed successfully.[/green]")
+
+        process = subprocess.Popen(
+            [npm_cmd, "start"],
+            cwd=viewer_dir,
+            shell=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True
+        )
+
+        print("[cyan]✅ Report viewer server is launched [/cyan]")
+        return process
+    except FileNotFoundError:
+        print("[red]❌ Failed to launch viewer: npm is not installed or not in PATH.[/red]")
+        return None

@@ -1,8 +1,6 @@
 from rich.console import Console
 from rich.prompt import Prompt
 from green_llama.benchmark import run_benchmark, save_logs
-import threading
-import ollama
 
 from green_llama.metrics.metrics import test_all
 from green_llama.utils import clear_terminal
@@ -10,12 +8,16 @@ from . import models
 from . import monitoring
 from . import utils
 from . import interface
+import subprocess
+import platform
+import os
 
 def main():
     clear_terminal()
     console = Console()
     interface.display_banner()
     model_choice = False
+    report_process = None
 
     metrics_storage = {"prompts": [], "values": [], "times": []}
 
@@ -44,14 +46,27 @@ def main():
         while True:
             prompt = Prompt.ask(
                 "Enter your prompt ('restart' to change model, 'exit' to quit, "
-                "'summary' for stats, 'benchmark' for benchmark results)"
+                "'summary' for stats, 'benchmark' for benchmark results, 'web report' to launch web report viewer)"
             )
             if prompt.lower() == "exit":
                 console.print("[bold red]Exiting wrapper...[/bold red]")
                 utils.save_all_metrics_to_csv(model, metrics_storage)
                 utils.clear_metrics_storage(metrics_storage)
+                if report_process:
+                    console.print("[cyan]Shutting down report viewer...[/cyan]")
+                    try:
+                        if platform.system() == "Windows":
+                            subprocess.run(
+                                ["taskkill", "/PID", str(report_process.pid), "/T", "/F"],
+                                stdout=subprocess.DEVNULL,
+                                stderr=subprocess.DEVNULL
+                            )
+                        else:
+                            os.killpg(os.getpgid(report_process.pid), signal.SIGTERM)
+                        console.print("[cyan]Report viewer shut down successfully[/cyan]")
+                    except Exception as e:
+                        console.print(f"[red]Failed to shut down viewer: {e}[/red]")
                 return
-
             elif prompt.lower() == "restart":
                 model_choice = False
                 console.print("[bold yellow]Restarting model selection...[/bold yellow]")
@@ -99,6 +114,9 @@ def main():
                     utils.display_summary(metrics_storage)
                     save_logs(metrics_storage, model, benchmark_names[int(benchmark_type)])
                 break
+            elif prompt.lower() == "web report":
+                if report_process == None:
+                    report_process = utils.launch_report_viewer()
 
             else:
                 console.print("[yellow]Thinking...[/yellow]")
