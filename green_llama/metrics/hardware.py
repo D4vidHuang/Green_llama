@@ -16,8 +16,8 @@ class CPU:
     def get_power(self):
         # Get CPU utilization using psutil
         cpu_percent = psutil.cpu_percent(interval=1)
-        # Assume 15W TDP per CPU core (adjust based on actual CPU)
-        self._cpu_power = cpu_percent * psutil.cpu_count() * 15 / 100
+        # Assume 8W TDP per CPU core (adjust based on actual CPU)
+        self._cpu_power = cpu_percent * psutil.cpu_count() * 8 / 100
         return self._cpu_power
 
 class GPU:
