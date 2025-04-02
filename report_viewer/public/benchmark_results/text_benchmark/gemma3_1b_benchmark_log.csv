@@ -1,0 +1,151 @@
+Metric Name,Prompt,Value,Elapsed Time
+CPU Energy (J),"Hello, please introduce yourself",1.8691007995605469,1.9469799995422363
+CPU Energy (J),What's the weather like today?,2.79579995727539,2.0802083015441895
+GPU Energy (J),"Hello, please introduce yourself",104.3639689154625,1.9469799995422363
+GPU Energy (J),What's the weather like today?,107.14112857103348,2.0802083015441895
+RAM Energy (J),"Hello, please introduce yourself",12.377743488014131,1.9469799995422363
+RAM Energy (J),What's the weather like today?,13.19996456176982,2.0802083015441895
+Total Energy (J),"Hello, please introduce yourself",118.61081320303717,1.9469799995422363
+Total Energy (J),What's the weather like today?,123.13689309007869,2.0802083015441895
+Carbon Emissions (gCO2),"Hello, please introduce yourself",0.012355293041983038,1.9469799995422363
+Carbon Emissions (gCO2),What's the weather like today?,0.012826759696883197,2.0802083015441895
+CPU Energy (J),"Hello, please introduce yourself",1.8691007995605469,1.9469799995422363
+CPU Energy (J),What's the weather like today?,2.79579995727539,2.0802083015441895
+CPU Energy (J),"Hello, please introduce yourself",3.8803175354003905,2.02099871635437
+CPU Energy (J),What's the weather like today?,14.634402832031252,2.381901502609253
+GPU Energy (J),"Hello, please introduce yourself",104.3639689154625,1.9469799995422363
+GPU Energy (J),What's the weather like today?,107.14112857103348,2.0802083015441895
+GPU Energy (J),"Hello, please introduce yourself",104.68975450587273,2.02099871635437
+GPU Energy (J),What's the weather like today?,136.44484567546843,2.381901502609253
+RAM Energy (J),"Hello, please introduce yourself",12.377743488014131,1.9469799995422363
+RAM Energy (J),What's the weather like today?,13.19996456176982,2.0802083015441895
+RAM Energy (J),"Hello, please introduce yourself",12.848310566375469,2.02099871635437
+RAM Energy (J),What's the weather like today?,15.256144906268704,2.381901502609253
+Total Energy (J),"Hello, please introduce yourself",118.61081320303717,1.9469799995422363
+Total Energy (J),What's the weather like today?,123.13689309007869,2.0802083015441895
+Total Energy (J),"Hello, please introduce yourself",121.4183826076486,2.02099871635437
+Total Energy (J),What's the weather like today?,166.33539341376837,2.381901502609253
+Carbon Emissions (gCO2),"Hello, please introduce yourself",0.012355293041983038,1.9469799995422363
+Carbon Emissions (gCO2),What's the weather like today?,0.012826759696883197,2.0802083015441895
+Carbon Emissions (gCO2),"Hello, please introduce yourself",0.01264774818829673,2.02099871635437
+Carbon Emissions (gCO2),What's the weather like today?,0.01732660348060087,2.381901502609253
+CPU Energy (J),"Hello, please introduce yourself",1.8691007995605469,1.9469799995422363
+CPU Energy (J),What's the weather like today?,2.79579995727539,2.0802083015441895
+CPU Energy (J),"Hello, please introduce yourself",3.8803175354003905,2.02099871635437
+CPU Energy (J),What's the weather like today?,14.634402832031252,2.381901502609253
+CPU Energy (J),"Hello, please introduce yourself",6.2801235351562505,1.8171653747558594
+CPU Energy (J),What's the weather like today?,7.788496398925781,3.3804237842559814
+GPU Energy (J),"Hello, please introduce yourself",104.3639689154625,1.9469799995422363
+GPU Energy (J),What's the weather like today?,107.14112857103348,2.0802083015441895
+GPU Energy (J),"Hello, please introduce yourself",104.68975450587273,2.02099871635437
+GPU Energy (J),What's the weather like today?,136.44484567546843,2.381901502609253
+GPU Energy (J),"Hello, please introduce yourself",97.51817983627319,1.8171653747558594
+GPU Energy (J),What's the weather like today?,174.05802065134048,3.3804237842559814
+RAM Energy (J),"Hello, please introduce yourself",12.377743488014131,1.9469799995422363
+RAM Energy (J),What's the weather like today?,13.19996456176982,2.0802083015441895
+RAM Energy (J),"Hello, please introduce yourself",12.848310566375469,2.02099871635437
+RAM Energy (J),What's the weather like today?,15.256144906268704,2.381901502609253
+RAM Energy (J),"Hello, please introduce yourself",11.682262048008234,1.8171653747558594
+RAM Energy (J),What's the weather like today?,21.691952506705178,3.3804237842559814
+Total Energy (J),"Hello, please introduce yourself",118.61081320303717,1.9469799995422363
+Total Energy (J),What's the weather like today?,123.13689309007869,2.0802083015441895
+Total Energy (J),"Hello, please introduce yourself",121.4183826076486,2.02099871635437
+Total Energy (J),What's the weather like today?,166.33539341376837,2.381901502609253
+Total Energy (J),"Hello, please introduce yourself",115.48056541943768,1.8171653747558594
+Total Energy (J),What's the weather like today?,203.53846955697145,3.3804237842559814
+Carbon Emissions (gCO2),"Hello, please introduce yourself",0.012355293041983038,1.9469799995422363
+Carbon Emissions (gCO2),What's the weather like today?,0.012826759696883197,2.0802083015441895
+Carbon Emissions (gCO2),"Hello, please introduce yourself",0.01264774818829673,2.02099871635437
+Carbon Emissions (gCO2),What's the weather like today?,0.01732660348060087,2.381901502609253
+Carbon Emissions (gCO2),"Hello, please introduce yourself",0.012029225564524758,1.8171653747558594
+Carbon Emissions (gCO2),What's the weather like today?,0.021201923912184527,3.3804237842559814
+CPU Energy (J),"Hello, please introduce yourself",1.8691007995605469,1.9469799995422363
+CPU Energy (J),What's the weather like today?,2.79579995727539,2.0802083015441895
+CPU Energy (J),"Hello, please introduce yourself",3.8803175354003905,2.02099871635437
+CPU Energy (J),What's the weather like today?,14.634402832031252,2.381901502609253
+CPU Energy (J),"Hello, please introduce yourself",6.2801235351562505,1.8171653747558594
+CPU Energy (J),What's the weather like today?,7.788496398925781,3.3804237842559814
+CPU Energy (J),"Hello, please introduce yourself",2.2716318054199216,1.97190260887146
+CPU Energy (J),What's the weather like today?,10.07463739013672,4.036313056945801
+GPU Energy (J),"Hello, please introduce yourself",104.3639689154625,1.9469799995422363
+GPU Energy (J),What's the weather like today?,107.14112857103348,2.0802083015441895
+GPU Energy (J),"Hello, please introduce yourself",104.68975450587273,2.02099871635437
+GPU Energy (J),What's the weather like today?,136.44484567546843,2.381901502609253
+GPU Energy (J),"Hello, please introduce yourself",97.51817983627319,1.8171653747558594
+GPU Energy (J),What's the weather like today?,174.05802065134048,3.3804237842559814
+GPU Energy (J),"Hello, please introduce yourself",102.70654738306999,1.97190260887146
+GPU Energy (J),What's the weather like today?,205.63400499916077,4.036313056945801
+RAM Energy (J),"Hello, please introduce yourself",12.377743488014131,1.9469799995422363
+RAM Energy (J),What's the weather like today?,13.19996456176982,2.0802083015441895
+RAM Energy (J),"Hello, please introduce yourself",12.848310566375469,2.02099871635437
+RAM Energy (J),What's the weather like today?,15.256144906268704,2.381901502609253
+RAM Energy (J),"Hello, please introduce yourself",11.682262048008234,1.8171653747558594
+RAM Energy (J),What's the weather like today?,21.691952506705178,3.3804237842559814
+RAM Energy (J),"Hello, please introduce yourself",12.700518683633856,1.97190260887146
+RAM Energy (J),What's the weather like today?,26.04490996006906,4.036313056945801
+Total Energy (J),"Hello, please introduce yourself",118.61081320303717,1.9469799995422363
+Total Energy (J),What's the weather like today?,123.13689309007869,2.0802083015441895
+Total Energy (J),"Hello, please introduce yourself",121.4183826076486,2.02099871635437
+Total Energy (J),What's the weather like today?,166.33539341376837,2.381901502609253
+Total Energy (J),"Hello, please introduce yourself",115.48056541943768,1.8171653747558594
+Total Energy (J),What's the weather like today?,203.53846955697145,3.3804237842559814
+Total Energy (J),"Hello, please introduce yourself",117.67869787212376,1.97190260887146
+Total Energy (J),What's the weather like today?,241.75355234936654,4.036313056945801
+Carbon Emissions (gCO2),"Hello, please introduce yourself",0.012355293041983038,1.9469799995422363
+Carbon Emissions (gCO2),What's the weather like today?,0.012826759696883197,2.0802083015441895
+Carbon Emissions (gCO2),"Hello, please introduce yourself",0.01264774818829673,2.02099871635437
+Carbon Emissions (gCO2),What's the weather like today?,0.01732660348060087,2.381901502609253
+Carbon Emissions (gCO2),"Hello, please introduce yourself",0.012029225564524758,1.8171653747558594
+Carbon Emissions (gCO2),What's the weather like today?,0.021201923912184527,3.3804237842559814
+Carbon Emissions (gCO2),"Hello, please introduce yourself",0.012258197695012891,1.97190260887146
+Carbon Emissions (gCO2),What's the weather like today?,0.025182661703059016,4.036313056945801
+CPU Energy (J),"Hello, please introduce yourself",1.8691007995605469,1.9469799995422363
+CPU Energy (J),What's the weather like today?,2.79579995727539,2.0802083015441895
+CPU Energy (J),"Hello, please introduce yourself",3.8803175354003905,2.02099871635437
+CPU Energy (J),What's the weather like today?,14.634402832031252,2.381901502609253
+CPU Energy (J),"Hello, please introduce yourself",6.2801235351562505,1.8171653747558594
+CPU Energy (J),What's the weather like today?,7.788496398925781,3.3804237842559814
+CPU Energy (J),"Hello, please introduce yourself",2.2716318054199216,1.97190260887146
+CPU Energy (J),What's the weather like today?,10.07463739013672,4.036313056945801
+CPU Energy (J),"Hello, please introduce yourself",3.0453347167968756,1.9836382865905762
+CPU Energy (J),What's the weather like today?,4.86491830444336,2.8153462409973145
+GPU Energy (J),"Hello, please introduce yourself",104.3639689154625,1.9469799995422363
+GPU Energy (J),What's the weather like today?,107.14112857103348,2.0802083015441895
+GPU Energy (J),"Hello, please introduce yourself",104.68975450587273,2.02099871635437
+GPU Energy (J),What's the weather like today?,136.44484567546843,2.381901502609253
+GPU Energy (J),"Hello, please introduce yourself",97.51817983627319,1.8171653747558594
+GPU Energy (J),What's the weather like today?,174.05802065134048,3.3804237842559814
+GPU Energy (J),"Hello, please introduce yourself",102.70654738306999,1.97190260887146
+GPU Energy (J),What's the weather like today?,205.63400499916077,4.036313056945801
+GPU Energy (J),"Hello, please introduce yourself",101.17410846233368,1.9836382865905762
+GPU Energy (J),What's the weather like today?,148.5489290599823,2.8153462409973145
+RAM Energy (J),"Hello, please introduce yourself",12.377743488014131,1.9469799995422363
+RAM Energy (J),What's the weather like today?,13.19996456176982,2.0802083015441895
+RAM Energy (J),"Hello, please introduce yourself",12.848310566375469,2.02099871635437
+RAM Energy (J),What's the weather like today?,15.256144906268704,2.381901502609253
+RAM Energy (J),"Hello, please introduce yourself",11.682262048008234,1.8171653747558594
+RAM Energy (J),What's the weather like today?,21.691952506705178,3.3804237842559814
+RAM Energy (J),"Hello, please introduce yourself",12.700518683633856,1.97190260887146
+RAM Energy (J),What's the weather like today?,26.04490996006906,4.036313056945801
+RAM Energy (J),"Hello, please introduce yourself",12.769674109262562,1.9836382865905762
+RAM Energy (J),What's the weather like today?,18.03237042628459,2.8153462409973145
+Total Energy (J),"Hello, please introduce yourself",118.61081320303717,1.9469799995422363
+Total Energy (J),What's the weather like today?,123.13689309007869,2.0802083015441895
+Total Energy (J),"Hello, please introduce yourself",121.4183826076486,2.02099871635437
+Total Energy (J),What's the weather like today?,166.33539341376837,2.381901502609253
+Total Energy (J),"Hello, please introduce yourself",115.48056541943768,1.8171653747558594
+Total Energy (J),What's the weather like today?,203.53846955697145,3.3804237842559814
+Total Energy (J),"Hello, please introduce yourself",117.67869787212376,1.97190260887146
+Total Energy (J),What's the weather like today?,241.75355234936654,4.036313056945801
+Total Energy (J),"Hello, please introduce yourself",116.98911728839312,1.9836382865905762
+Total Energy (J),What's the weather like today?,171.44621779071025,2.8153462409973145
+Carbon Emissions (gCO2),"Hello, please introduce yourself",0.012355293041983038,1.9469799995422363
+Carbon Emissions (gCO2),What's the weather like today?,0.012826759696883197,2.0802083015441895
+Carbon Emissions (gCO2),"Hello, please introduce yourself",0.01264774818829673,2.02099871635437
+Carbon Emissions (gCO2),What's the weather like today?,0.01732660348060087,2.381901502609253
+Carbon Emissions (gCO2),"Hello, please introduce yourself",0.012029225564524758,1.8171653747558594
+Carbon Emissions (gCO2),What's the weather like today?,0.021201923912184527,3.3804237842559814
+Carbon Emissions (gCO2),"Hello, please introduce yourself",0.012258197695012891,1.97190260887146
+Carbon Emissions (gCO2),What's the weather like today?,0.025182661703059016,4.036313056945801
+Carbon Emissions (gCO2),"Hello, please introduce yourself",0.012186366384207618,1.9836382865905762
+Carbon Emissions (gCO2),What's the weather like today?,0.01785898101986565,2.8153462409973145

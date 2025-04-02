@@ -32,7 +32,8 @@ def main():
                 console.print("[bold red]Exiting wrapper...[/bold red]")
                 return
             elif model.lower() == "rankings":
-                data_collection_folder = "green_llama/data_collection"
+                # data_collection_folder = "green_llama/data_collection"
+                data_collection_folder = "report_viewer/public"
                 utils.rank_models_by_co2(data_collection_folder)
                 continue
             elif model not in available_models:

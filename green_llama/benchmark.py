@@ -1,12 +1,9 @@
-import time
 from rich.console import Console
-import ollama
-import json
-import multiprocessing
 import os
 import csv
 from .metrics.metrics import test_all
-from . import monitoring
+import re
+import platform
 
 console = Console()
 
@@ -51,14 +48,12 @@ def run_benchmark(model: str, prompts: list, metric_name: str, measure_function,
 
 
 def save_logs(metrics_storage, model, benchmark_name, filename="benchmark_log.csv"):
-    directory = f"green_llama/data_collection/benchmark_results/{benchmark_name}"
+    safe_model = re.sub(r'[\\/:*?"<>|]', '_', model.replace('.', '_'))
+    directory = f"report_viewer/public/benchmark_results/{benchmark_name}"
     if not os.path.exists(directory):
         os.makedirs(directory)
-
-    safe_model_name = model.replace(":", "_")
-    file_path = os.path.join(directory, f"{safe_model_name}_{filename}")
+    file_path = os.path.join(directory, f"{safe_model}_{filename}")
     file_exists = os.path.exists(file_path)
-
     with open(file_path, mode="a" if file_exists else "w", newline="") as file:
         writer = csv.writer(file)
         if not file_exists:
@@ -67,4 +62,22 @@ def save_logs(metrics_storage, model, benchmark_name, filename="benchmark_log.cs
             for prompt, value, elapsed_time in zip(data["prompts"], data["values"], data["times"]):
                 writer.writerow([metric_name, prompt, value, elapsed_time])
 
-    print(f"[green]Log saved to {file_path}[/green]")
+    console.print(f"[green]Log saved to {file_path}[/green]")
+
+    # directory = f"green_llama/data_collection/benchmark_results/{benchmark_name}"
+    # if not os.path.exists(directory):
+    #     os.makedirs(directory)
+    #
+    # safe_model_name = model.replace(":", "_")
+    # file_path = os.path.join(directory, f"{safe_model_name}_{filename}")
+    # file_exists = os.path.exists(file_path)
+    #
+    # with open(file_path, mode="a" if file_exists else "w", newline="") as file:
+    #     writer = csv.writer(file)
+    #     if not file_exists:
+    #         writer.writerow(["Metric Name", "Prompt", "Value", "Elapsed Time"])
+    #     for metric_name, data in metrics_storage.items():
+    #         for prompt, value, elapsed_time in zip(data["prompts"], data["values"], data["times"]):
+    #             writer.writerow([metric_name, prompt, value, elapsed_time])
+    #
+    # print(f"[green]Log saved to {file_path}[/green]")

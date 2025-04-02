@@ -4,40 +4,54 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   PieChart, Pie, Cell
 } from 'recharts';
+import Papa from 'papaparse';
 import 'react-tabs/style/react-tabs.css';
 import './BenchmarkReport.css';
-
+import Plot from 'react-plotly.js';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
-const BENCHMARK_FILES = [
-  'benchmark_results/deepseek-r1_1.5b_benchmark_log.csv',
-  'benchmark_results/gemma3_1b_benchmark_log.csv',
-  'benchmark_results/llama3.2_1b_benchmark_log.csv',
-];
 
 const BenchmarkReport = () => {
   const [dataByModel, setDataByModel] = useState({});
 
   useEffect(() => {
-    const loadAllCSVs = async () => {
-      const allData = {};
+    const loadBenchmarkCSVs = async () => {
+      try {
+        const res = await fetch('/file-list.json');
+        const allFiles = await res.json();
   
-      for (const filePath of BENCHMARK_FILES) {
-        let modelName = filePath.replace('benchmark_results/', '');
-        modelName = modelName.replace('_benchmark_log.csv', '');
+        const benchmarkFiles = allFiles.filter((path) =>
+          path.startsWith('benchmark_results/') && path.endsWith('.csv')
+        );
   
-        try {
+        const allData = {};
+  
+        for (const filePath of benchmarkFiles) {
+          const match = filePath.match(/benchmark_results\/(\w+)_benchmark\/(.*)_benchmark_log\.csv/);
+          if (!match) continue;
+  
+          const benchmarkType = match[1]; // chat, code, text
+          const modelName = match[2];     // gemma3_1b, llama3_2_1b, etc.
+  
           const res = await fetch(`/${filePath}`);
           const text = await res.text();
-          const lines = text.trim().split('\n');
-          const dataRows = lines.slice(1);
+          const parsed = Papa.parse(text, {
+            header: true,
+            skipEmptyLines: true,
+          });
+          
+          const dataRows = parsed.data;
   
           const metricsByName = {};
           let cpu = 0, gpu = 0, ram = 0, co2 = 0;
   
           dataRows.forEach((row) => {
-            const [rawMetricName, rawPrompt, valueStr, timeStr] = row.split(',');
+            const rawMetricName = row['Metric Name'];
+            const rawPrompt = row['Prompt'];
+            const valueStr = row['Value'];
+            const timeStr = row['Elapsed Time'];
+
             if (!rawMetricName || !rawPrompt || !valueStr || !timeStr) return;
   
             const metricName = rawMetricName.trim();
@@ -55,7 +69,6 @@ const BenchmarkReport = () => {
               time: elapsedTime,
             });
   
-            // Accumulate totals for visualization
             if (metricName === 'CPU Energy (J)') cpu += value;
             if (metricName === 'GPU Energy (J)') gpu += value;
             if (metricName === 'RAM Energy (J)') ram += value;
@@ -68,19 +81,24 @@ const BenchmarkReport = () => {
             });
           });
   
-          allData[modelName] = {
+          if (!allData[benchmarkType]) {
+            allData[benchmarkType] = {};
+          }
+  
+          allData[benchmarkType][modelName] = {
             metrics: metricsByName,
             totals: { cpu, gpu, ram, co2 },
           };
-        } catch (err) {
-          console.error(`Failed to load CSV file ${filePath}:`, err);
         }
-      }
   
-      setDataByModel(allData);
+        setDataByModel(allData); // allData = { chat: { model1: {} }, code: { model2: {} }, ... }
+  
+      } catch (err) {
+        console.error('Failed to load benchmark CSVs:', err);
+      }
     };
   
-    loadAllCSVs();
+    loadBenchmarkCSVs();
   }, []);
 
   const renderGraphWithTable = (data, metricName, allMetrics) => {
@@ -91,6 +109,33 @@ const BenchmarkReport = () => {
     const totalValue = data.reduce((sum, d) => sum + d.value, 0).toFixed(2);
     const totalTime = data.reduce((sum, d) => sum + d.time, 0).toFixed(2);
   
+    // Group values by unique prompt
+    const promptMap = new Map();
+    data.forEach(({ prompt, value }) => {
+      const trimmed = prompt.trim();
+      if (!promptMap.has(trimmed)) promptMap.set(trimmed, []);
+      promptMap.get(trimmed).push(value);
+    });
+  
+    const boxPlotTraces = [];
+    let index = 1;
+  
+    for (const [prompt, values] of promptMap.entries()) {
+      boxPlotTraces.push({
+        y: values,
+        x: Array(values.length).fill(`#${index}`), // Show #1, #2, etc. on x-axis
+        type: 'box',
+        name: `Prompt ${index}`,
+        text: Array(values.length).fill(prompt),
+        hovertemplate:
+          `<b>Prompt ${index}</b><br><i>%{text}</i><br>Value: %{y}<extra></extra>`,
+        boxpoints: 'all',
+        jitter: 0.4,
+        marker: { size: 4 },
+      });
+      index++;
+    }
+  
     const displayedMetrics = [
       'CPU Energy (J)',
       'GPU Energy (J)',
@@ -99,24 +144,18 @@ const BenchmarkReport = () => {
       'Carbon Emissions (gCO2)',
     ];
   
-    // Build prompt summary rows
-    const tableRows = data.map((entry) => {
+    const tableRows = Array.from(promptMap.entries()).map(([prompt], i) => {
       const row = {
-        index: entry.index,
-        prompt: entry.prompt,
+        index: i + 1,
+        prompt,
       };
-
-      // safe way if the report somehow halts and misses one metrics
       displayedMetrics.forEach((metric) => {
-        let match = null;
-        if (allMetrics[metric]) {
-          match = allMetrics[metric].find(
-            (d) => d.index === entry.index && d.prompt === entry.prompt
-          );
+        const matches = allMetrics[metric]?.filter(d => d.prompt === prompt);
+        if (matches?.length) {
+          const avg = matches.reduce((sum, d) => sum + d.value, 0) / matches.length;
+          row[metric] = avg.toFixed(2);
         }
-        if (match) row[metric] = match.value.toFixed(2);
       });
-  
       return row;
     });
   
@@ -124,42 +163,25 @@ const BenchmarkReport = () => {
       <div style={{ padding: '20px' }}>
         <p><strong>Total {metricName}:</strong> {totalValue} over {totalTime} seconds</p>
   
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart
-            data={data}
-            margin={{ top: 20, right: 30, left: 80, bottom: 40 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              dataKey="index"
-              label={{
-                value: 'Prompt Index',
-                position: 'outsideBottom',
-                offset: 10,
-                dy: 20
-              }}
-            />
-            <YAxis
-              label={{
-                value: metricName,
-                angle: -90,
-                position: 'insideLeft',
-                dx: -20,
-                dy: 70
-              }}
-            />
-            <Tooltip formatter={(val) => [val, 'Value']} />
-            <Legend verticalAlign="top" align="right" />
-            <Line
-              type="monotone"
-              dataKey="value"
-              stroke="#8884d8"
-              name="Metric Value"
-            />
-          </LineChart>
-        </ResponsiveContainer>
+        {/* Box Plot */}
+        <Plot
+          data={boxPlotTraces}
+          layout={{
+            title: `${metricName} Distribution by Prompt Index`,
+            xaxis: {
+              title: 'Prompt Index',
+              tickmode: 'array',
+              tickvals: boxPlotTraces.map((_, i) => `#${i + 1}`),
+              ticktext: boxPlotTraces.map((_, i) => `#${i + 1}`),
+            },
+            yaxis: { title: metricName },
+            boxmode: 'group',
+            margin: { t: 50, b: 100, l: 60, r: 30 },
+          }}
+          style={{ width: '100%', height: '400px' }}
+        />
   
-        {/* Prompt summary table */}
+        {/* Table */}
         <div style={{ marginTop: '30px' }}>
           <h3 style={{ fontWeight: 'bold', marginBottom: '10px' }}>Prompt Summary</h3>
           <table className="report-table">
@@ -188,6 +210,8 @@ const BenchmarkReport = () => {
       </div>
     );
   };
+  
+
   
   const renderEnergyAndFacts = (totals) => {
     const pieData = [
@@ -257,27 +281,39 @@ const BenchmarkReport = () => {
 
   return (
     <div className="container"> {/* 👈 your original CSS container */}
-      <h1 className="title">📊 Benchmark Report</h1> {/* 👈 styled title from your CSS */}
+    <h1 className="title">📊 Benchmark Report</h1> {/* 👈 styled title from your CSS */}
       <Tabs>
         <TabList>
-          {Object.keys(dataByModel).map((modelName) => (
-            <Tab key={modelName}>{modelName}</Tab>
+          {Object.keys(dataByModel).map((benchmarkType) => (
+            <Tab key={benchmarkType}>{benchmarkType}</Tab>
           ))}
         </TabList>
-  
-        {Object.entries(dataByModel).map(([modelName, modelData]) => (
-          <TabPanel key={modelName}>
-            {renderEnergyAndFacts(dataByModel[modelName].totals)}
+
+        {Object.entries(dataByModel).map(([benchmarkType, models]) => (
+          <TabPanel key={benchmarkType}>
             <Tabs>
               <TabList>
-                {Object.keys(modelData.metrics).map((metricName) => (
-                  <Tab key={metricName}>{metricName}</Tab>
+                {Object.keys(models).map((modelName) => (
+                  <Tab key={modelName}>{modelName}</Tab>
                 ))}
               </TabList>
-              
-              {Object.entries(modelData.metrics).map(([metricName, data]) => (
-                <TabPanel key={metricName}>
-                  {renderGraphWithTable(data, metricName, modelData.metrics)}
+
+              {Object.entries(models).map(([modelName, modelData]) => (
+                <TabPanel key={modelName}>
+                  {renderEnergyAndFacts(modelData.totals)}
+                  <Tabs>
+                    <TabList>
+                      {Object.keys(modelData.metrics).map((metricName) => (
+                        <Tab key={metricName}>{metricName}</Tab>
+                      ))}
+                    </TabList>
+
+                    {Object.entries(modelData.metrics).map(([metricName, data]) => (
+                      <TabPanel key={metricName}>
+                        {renderGraphWithTable(data, metricName, modelData.metrics)}
+                      </TabPanel>
+                    ))}
+                  </Tabs>
                 </TabPanel>
               ))}
             </Tabs>
@@ -286,8 +322,6 @@ const BenchmarkReport = () => {
       </Tabs>
     </div>
   );
-
-
 }
   
 

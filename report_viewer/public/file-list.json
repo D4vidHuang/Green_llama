@@ -1,0 +1,11 @@
+[
+  "benchmark_results/chat_benchmark/gemma3_1b_benchmark_log.csv",
+  "benchmark_results/chat_benchmark/llama3_2_1b_benchmark_log.csv",
+  "benchmark_results/code_benchmark/gemma3_1b_benchmark_log.csv",
+  "benchmark_results/code_benchmark/llama3_2_1b_benchmark_log.csv",
+  "benchmark_results/text_benchmark/gemma3_1b_benchmark_log.csv",
+  "benchmark_results/text_benchmark/llama3_2_1b_benchmark_log.csv",
+  "conversation_metrics.csv",
+  "model_history/gemma3_1b_all_metrics.csv",
+  "model_history/llama3_2_1b_all_metrics.csv"
+]

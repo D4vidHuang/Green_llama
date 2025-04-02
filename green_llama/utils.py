@@ -90,11 +90,11 @@ def save_all_metrics_to_csv(model, metrics_storage):
 
     system = platform.system()
 
-    file_path = f"green_llama/data_collection/model_history/{model}_all_metrics.csv"
-    out_path = "green_llama/data_collection/conversation_metrics.csv"
+    file_path = f"report_viewer/public/model_history/{model}_all_metrics.csv"
+    out_path = "report_viewer/public/conversation_metrics.csv"
     if system == "Windows":
         safe_model = re.sub(r'[\\/:*?"<>|]', '_', model.replace('.', '_'))
-        file_path = f"green_llama/data_collection/model_history/{safe_model}_all_metrics.csv"
+        file_path = f"report_viewer/public/model_history/{safe_model}_all_metrics.csv"
 
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
 

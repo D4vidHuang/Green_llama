@@ -15,55 +15,63 @@ const ModelHistoryReport = () => {
 
   useEffect(() => {
     const loadCSVs = async () => {
-      const folder = 'model_history';
-      const knownFiles = [
-        'gemma3_1b_all_metrics.csv',
-        'llama3_2_1b_all_metrics.csv'
-      ];
-
-      const allData = {};
-
-      for (const file of knownFiles) {
-        const modelName = file.replace('_all_metrics.csv', '');
-        try {
-          const res = await fetch(`/${folder}/${file}`);
+      try {
+        const res = await fetch('/file-list.json');
+        const allFiles = await res.json();
+        const historyFiles = allFiles.filter(f =>
+          f.startsWith('model_history/') && f.endsWith('_all_metrics.csv')
+        );
+  
+        const allData = {};
+  
+        for (const filePath of historyFiles) {
+          const file = filePath.replace('model_history/', '');
+          const modelName = file.replace('_all_metrics.csv', '');
+  
+          const res = await fetch(`/${filePath}`);
           const text = await res.text();
-
-          const parsed = Papa.parse(text.trim(), { header: true, skipEmptyLines: true });
+  
+          const parsed = Papa.parse(text.trim(), {
+            header: true,
+            skipEmptyLines: true,
+          });
+  
           const metrics = {};
           let cpu = 0, gpu = 0, ram = 0, co2 = 0;
-
+  
           parsed.data.forEach(row => {
             const metric = row['Metric Name'];
             const prompt = row['Prompt']?.trim();
             const value = parseFloat(row['Value']);
             const time = parseFloat(row['Elapsed Time']);
-
+  
             if (!metric || !prompt || isNaN(value) || isNaN(time)) return;
-
+  
             if (!metrics[metric]) metrics[metric] = [];
             metrics[metric].push({ prompt, value, time });
-
+  
             if (metric === 'CPU Energy (J)') cpu += value;
             if (metric === 'GPU Energy (J)') gpu += value;
             if (metric === 'RAM Energy (J)') ram += value;
             if (metric === 'Carbon Emissions (gCO2)') co2 += value;
           });
-
+  
           Object.values(metrics).forEach(arr =>
             arr.forEach((d, i) => (d.index = i + 1))
           );
-
-          allData[modelName] = { metrics, totals: { cpu, gpu, ram, co2 } };
-
-        } catch (err) {
-          console.error(`Failed to load ${file}:`, err);
+  
+          allData[modelName] = {
+            metrics,
+            totals: { cpu, gpu, ram, co2 }
+          };
         }
+  
+        setDataByModel(allData);
+      } catch (err) {
+        console.error('Failed to load model history files:', err);
       }
-
-      setDataByModel(allData);
     };
-
+  
     loadCSVs();
   }, []);
 

@@ -44,3 +44,38 @@ Carbon Emissions (gCO2),hhhhh,0.01050616260951592,1.5881762504577637
 Carbon Emissions (gCO2),Co2,0.024503611100031738,3.4833390712738037
 Carbon Emissions (gCO2),Good!,0.0075338001128123265,1.3808081150054932
 Carbon Emissions (gCO2),keep generating more and,0.010065521589134045,1.5013976097106934
+CPU Energy (J),"Hi, Tell me about yourself.",2.2341987304687505,1.4555530548095703
+CPU Energy (J),How do you think of TU Delft?,5.291358947753906,2.755916118621826
+CPU Energy (J),That is the best study of TU Delft according to rankins?,4.728589920043946,1.8944671154022217
+CPU Energy (J),ranking,2.8910430450439457,1.6730573177337646
+CPU Energy (J),Ok! Bye,1.904374053955078,1.416944980621338
+GPU Energy (J),"Hi, Tell me about yourself.",73.26746370601654,1.4555530548095703
+GPU Energy (J),How do you think of TU Delft?,133.13830769062042,2.755916118621826
+GPU Energy (J),That is the best study of TU Delft according to rankins?,94.8995412118435,1.8944671154022217
+GPU Energy (J),ranking,79.96377450108528,1.6730573177337646
+GPU Energy (J),Ok! Bye,52.29802228975296,1.416944980621338
+RAM Energy (J),"Hi, Tell me about yourself.",8.710383992944665,1.4555530548095703
+RAM Energy (J),How do you think of TU Delft?,16.503372829245215,2.755916118621826
+RAM Energy (J),That is the best study of TU Delft according to rankins?,11.367274264002539,1.8944671154022217
+RAM Energy (J),ranking,10.038760364567391,1.6730573177337646
+RAM Energy (J),Ok! Bye,8.485153497855949,1.416944980621338
+Total Energy (J),"Hi, Tell me about yourself.",84.21204642942996,1.4555530548095703
+Total Energy (J),How do you think of TU Delft?,154.93303946761955,2.755916118621826
+Total Energy (J),That is the best study of TU Delft according to rankins?,110.99540539588997,1.8944671154022217
+Total Energy (J),ranking,92.89357791069662,1.6730573177337646
+Total Energy (J),Ok! Bye,62.687549841563985,1.416944980621338
+Carbon Emissions (gCO2),"Hi, Tell me about yourself.",0.008772088169732288,1.4555530548095703
+Carbon Emissions (gCO2),How do you think of TU Delft?,0.016138858277877036,2.755916118621826
+Carbon Emissions (gCO2),That is the best study of TU Delft according to rankins?,0.011562021395405206,1.8944671154022217
+Carbon Emissions (gCO2),ranking,0.009676414365697565,1.6730573177337646
+Carbon Emissions (gCO2),Ok! Bye,0.006529953108496248,1.416944980621338
+CPU Energy (J),Tell me smt about TU Delft!,2.333001983642578,4.083511829376221
+CPU Energy (J),Do you know today's date?,3.260899200439453,1.6983850002288818
+GPU Energy (J),Tell me smt about TU Delft!,199.11523874282835,4.083511829376221
+GPU Energy (J),Do you know today's date?,85.70560226655006,1.6983850002288818
+RAM Energy (J),Tell me smt about TU Delft!,24.447773593559948,4.083511829376221
+RAM Energy (J),Do you know today's date?,10.2311721798466,1.6983850002288818
+Total Energy (J),Tell me smt about TU Delft!,225.8960143200309,4.083511829376221
+Total Energy (J),Do you know today's date?,99.19767364683611,1.6983850002288818
+Carbon Emissions (gCO2),Tell me smt about TU Delft!,0.02353083482500322,4.083511829376221
+Carbon Emissions (gCO2),Do you know today's date?,0.010333091004878761,1.6983850002288818
