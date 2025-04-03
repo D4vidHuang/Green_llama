@@ -32,26 +32,30 @@ Green Llama is a command-line tool designed to monitor and analyze the performan
 
 ## Installation
 
-1. **Install Ollama:**
-   - Follow the installation instructions on the Ollama website.
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/ThePhilippeH/green_llama.git
+    cd green_llama
+    ```
 
-2. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/username/green-llama.git
-   cd green-llama
-   ```
+2. Install Python dependencies:
+    ```sh
+    pip install .
+    ```
 
-3. **Install the Tool:**
-   ```bash
-   pip install .
-   ```
-
+3. Install Node.js dependencies for the report viewer:
+    ```sh
+    cd report_viewer
+    npm install
+    cd ..
+    ```
 ## Usage
 
-Once installed, you can run the CLI tool using the following command:
+### Running the Main Application
 
-```bash
-green-llama
+To start the main application, run:
+```sh
+python -m green_llama
 ```
 
 ### Commands and Options
@@ -60,6 +64,9 @@ green-llama
    - The tool will display a list of locally available models.
    - Enter the name of the model you want to use.
    - If the model is not available, you will be prompted to download it.
+   - Type `web report` to open the report viewer in your web browser.'
+   - Type `rankings` to view the rankings of the models based on their performance.
+
 
 2. **Prompt Input:**
    - Enter your prompts to interact with the model.
@@ -67,8 +74,3 @@ green-llama
    - Type `exit` to quit the application.
    - Type `summary` to view collected metrics and graphs.
    - Type `benchmark` to run benchmark tests on the model.
-
-3. **View Results:**
-   - The tool will display the model's response and the selected metrics.
-   - A `metrics.csv` file will be generated containing all collected data.
-   - A `metrics_bar_plot.png` file will be generated showing a graph of the collected data.
