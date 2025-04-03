@@ -35,7 +35,6 @@ Green Llama is a command-line tool designed to monitor and analyze the performan
 1. Clone the repository:
     ```sh
     git clone https://github.com/ThePhilippeH/green_llama.git
-    cd green_llama
     ```
 
 2. Install Python dependencies:
@@ -53,9 +52,9 @@ Green Llama is a command-line tool designed to monitor and analyze the performan
 
 ### Running the Main Application
 
-To start the main application, run:
+To start the main application, first the user should start running Ollama locally and start green-llama by:
 ```sh
-python -m green_llama
+green-llama
 ```
 
 ### Commands and Options
