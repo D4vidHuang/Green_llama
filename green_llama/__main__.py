@@ -1,3 +1,5 @@
+import signal
+
 from rich.console import Console
 from rich.prompt import Prompt
 from green_llama.benchmark import run_benchmark, save_logs
@@ -26,9 +28,23 @@ def main():
             available_models = models.list_available_models()
             interface.display_model_list(available_models)
 
-            model = Prompt.ask("Enter model name or type 'rankings' to view local rankings", default="llama2")
+            model = Prompt.ask("Enter model name or type 'rankings' to view local rankings or type 'web report' to launch web report viewer", default="llama2")
 
             if model.lower() == "exit":
+                if report_process:
+                    console.print("[cyan]Shutting down report viewer...[/cyan]")
+                    try:
+                        if platform.system() == "Windows":
+                            subprocess.run(
+                                ["taskkill", "/PID", str(report_process.pid), "/T", "/F"],
+                                stdout=subprocess.DEVNULL,
+                                stderr=subprocess.DEVNULL
+                            )
+                        else:
+                            os.killpg(os.getpgid(report_process.pid), signal.SIGTERM)
+                        console.print("[cyan]Report viewer shut down successfully[/cyan]")
+                    except Exception as e:
+                        console.print(f"[red]Failed to shut down viewer: {e}[/red]")
                 console.print("[bold red]Exiting wrapper...[/bold red]")
                 return
             elif model.lower() == "rankings":
@@ -36,6 +52,11 @@ def main():
                 data_collection_folder = "report_viewer/public"
                 utils.rank_models_by_co2(data_collection_folder)
                 continue
+            elif model.lower() == "web report":
+                if report_process == None:
+                    report_process = utils.launch_report_viewer()
+                else:
+                    console.print("[cyan]Report viewer is already running...[/cyan]")
             elif model not in available_models:
                 model_choice = models.handle_missing_model(model)
             else:
@@ -47,7 +68,7 @@ def main():
         while True:
             prompt = Prompt.ask(
                 "Enter your prompt ('restart' to change model, 'exit' to quit, "
-                "'summary' for stats, 'benchmark' for benchmark results, 'web report' to launch web report viewer)"
+                "'summary' for stats, 'benchmark' for benchmark results)"
             )
             if prompt.lower() == "exit":
                 console.print("[bold red]Exiting wrapper...[/bold red]")
@@ -115,9 +136,7 @@ def main():
                     utils.display_summary(metrics_storage)
                     save_logs(metrics_storage, model, benchmark_names[int(benchmark_type)])
                 break
-            elif prompt.lower() == "web report":
-                if report_process == None:
-                    report_process = utils.launch_report_viewer()
+
 
             else:
                 console.print("[yellow]Thinking...[/yellow]")

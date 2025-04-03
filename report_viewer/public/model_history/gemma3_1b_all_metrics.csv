@@ -54,3 +54,13 @@ Total Energy (J),yo,199.60866161016972,3.1502692699432373
 Total Energy (J),hi,88.6110615766875,1.277332067489624
 Carbon Emissions (gCO2),yo,0.020792568917726014,3.1502692699432373
 Carbon Emissions (gCO2),hi,0.009230318914238282,1.277332067489624
+CPU Energy (J),hola como te llamas?,6.137708660125733,2.683009624481201
+CPU Energy (J),"de donde viene la pasta, responde brevemente",3.128840446472168,1.7782247066497803
+GPU Energy (J),hola como te llamas?,0.0,2.683009624481201
+GPU Energy (J),"de donde viene la pasta, responde brevemente",0.0,1.7782247066497803
+RAM Energy (J),hola como te llamas?,15.871725498196426,2.683009624481201
+RAM Energy (J),"de donde viene la pasta, responde brevemente",10.60013225950894,1.7782247066497803
+Total Energy (J),hola como te llamas?,22.009434158322158,2.683009624481201
+Total Energy (J),"de donde viene la pasta, responde brevemente",13.728972705981107,1.7782247066497803
+Carbon Emissions (gCO2),hola como te llamas?,0.0022926493914918918,2.683009624481201
+Carbon Emissions (gCO2),"de donde viene la pasta, responde brevemente",0.0014301013235396987,1.7782247066497803

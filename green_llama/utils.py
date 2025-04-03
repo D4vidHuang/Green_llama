@@ -6,7 +6,8 @@ from rich.console import Console
 from rich.table import Table
 from datasets import load_dataset
 import re
-
+import time
+import requests
 import subprocess
 from rich import print
 
@@ -95,6 +96,10 @@ def save_all_metrics_to_csv(model, metrics_storage):
     if system == "Windows":
         safe_model = re.sub(r'[\\/:*?"<>|]', '_', model.replace('.', '_'))
         file_path = f"report_viewer/public/model_history/{safe_model}_all_metrics.csv"
+    else:
+        safe_model = model.replace('.', '_').replace(':', '_').replace('-', '_')
+        file_path = f"report_viewer/public/model_history/{safe_model}_all_metrics.csv"
+
 
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
@@ -292,10 +297,13 @@ def calculate_average(values):
 def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+
 def launch_report_viewer():
-    viewer_dir = os.path.join(os.getcwd(),"report_viewer")
+    viewer_dir = os.path.join(os.getcwd(), "report_viewer")
     npm_cmd = "npm.cmd" if os.name == "nt" else "npm"
     node_modules = os.path.join(viewer_dir, "node_modules")
+    console.print(
+        f"Running {npm_cmd} in {viewer_dir}. ")
 
     try:
         print(f"[bold green]Launching report viewer from {viewer_dir}...[/bold green]")
@@ -315,14 +323,29 @@ def launch_report_viewer():
         process = subprocess.Popen(
             [npm_cmd, "start"],
             cwd=viewer_dir,
-            shell=True,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
+             stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
             start_new_session=True
         )
 
-        print("[cyan]✅ Report viewer server is launched [/cyan]")
-        return process
+        # Check if the server is up and running
+        server_url = "http://localhost:3000"
+        for _ in range(10):  # Retry for up to 30 seconds
+            try:
+                response = requests.get(server_url)
+                if response.status_code == 200:
+                    print("[cyan]✅ Report viewer server is launched and running at http://localhost:3000[/cyan]")
+                    return process
+            except requests.ConnectionError:
+                time.sleep(1)
+
+        # If the server did not start, print the error output
+        stdout, stderr = process.communicate()
+        print(f"[red]❌ Failed to start the report viewer server within the expected time.[/red]")
+        print(f"[red]stdout: {stdout.decode()}[/red]")
+        print(f"[red]stderr: {stderr.decode()}[/red]")
+        return None
+
     except FileNotFoundError:
         print("[red]❌ Failed to launch viewer: npm is not installed or not in PATH.[/red]")
         return None

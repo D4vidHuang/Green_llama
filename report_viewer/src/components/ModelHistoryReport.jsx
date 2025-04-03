@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   PieChart, Pie, Cell
 } from 'recharts';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
@@ -21,57 +21,57 @@ const ModelHistoryReport = () => {
         const historyFiles = allFiles.filter(f =>
           f.startsWith('model_history/') && f.endsWith('_all_metrics.csv')
         );
-  
+
         const allData = {};
-  
+
         for (const filePath of historyFiles) {
           const file = filePath.replace('model_history/', '');
           const modelName = file.replace('_all_metrics.csv', '');
-  
+
           const res = await fetch(`/${filePath}`);
           const text = await res.text();
-  
+
           const parsed = Papa.parse(text.trim(), {
             header: true,
             skipEmptyLines: true,
           });
-  
+
           const metrics = {};
           let cpu = 0, gpu = 0, ram = 0, co2 = 0;
-  
+
           parsed.data.forEach(row => {
             const metric = row['Metric Name'];
             const prompt = row['Prompt']?.trim();
             const value = parseFloat(row['Value']);
             const time = parseFloat(row['Elapsed Time']);
-  
+
             if (!metric || !prompt || isNaN(value) || isNaN(time)) return;
-  
+
             if (!metrics[metric]) metrics[metric] = [];
             metrics[metric].push({ prompt, value, time });
-  
+
             if (metric === 'CPU Energy (J)') cpu += value;
             if (metric === 'GPU Energy (J)') gpu += value;
             if (metric === 'RAM Energy (J)') ram += value;
             if (metric === 'Carbon Emissions (gCO2)') co2 += value;
           });
-  
+
           Object.values(metrics).forEach(arr =>
             arr.forEach((d, i) => (d.index = i + 1))
           );
-  
+
           allData[modelName] = {
             metrics,
             totals: { cpu, gpu, ram, co2 }
           };
         }
-  
+
         setDataByModel(allData);
       } catch (err) {
         console.error('Failed to load model history files:', err);
       }
     };
-  
+
     loadCSVs();
   }, []);
 
@@ -162,14 +162,14 @@ const ModelHistoryReport = () => {
       <div style={{ padding: '20px' }}>
         <p><strong>Total {metricName}:</strong> {total} over {totalTime} seconds</p>
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={data} margin={{ top: 20, right: 30, left: 80, bottom: 40 }}>
+          <BarChart data={data} margin={{ top: 20, right: 30, left: 80, bottom: 40 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="index" label={{ value: 'Prompt Index', position: 'outsideBottom', offset: 10, dy: 20 }} />
             <YAxis label={{ value: metricName, angle: -90, position: 'insideLeft', dx: -20, dy: 70 }} />
             <Tooltip />
             <Legend verticalAlign="top" align="right" />
-            <Line type="monotone" dataKey="value" stroke="#8884d8" name="Metric Value" />
-          </LineChart>
+            <Bar dataKey="value" fill="#8884d8" name="Metric Value" />
+          </BarChart>
         </ResponsiveContainer>
 
         <div style={{ marginTop: '30px' }}>

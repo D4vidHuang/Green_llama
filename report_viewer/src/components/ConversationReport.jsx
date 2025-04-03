@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   PieChart, Pie, Cell
 } from 'recharts';
 import Papa from 'papaparse';
@@ -20,46 +20,45 @@ const ConversationReport = () => {
       try {
         const res = await fetch(`/${FILE_PATH}`);
         const text = await res.text();
-  
+
         const parsed = Papa.parse(text.trim(), {
           header: true,
           skipEmptyLines: true,
         });
-  
+
         const metricsByName = {};
         let cpu = 0, gpu = 0, ram = 0, co2 = 0;
-  
+
         parsed.data.forEach(row => {
           const metricName = row['Metric Name'];
           const prompt = row['Prompt']?.trim();
           const value = parseFloat(row['Value']);
           const time = parseFloat(row['Elapsed Time']);
-  
+
           if (!metricName || !prompt || isNaN(value) || isNaN(time)) return;
-  
+
           if (!metricsByName[metricName]) metricsByName[metricName] = [];
           metricsByName[metricName].push({ prompt, value, time });
-  
+
           if (metricName === 'CPU Energy (J)') cpu += value;
           if (metricName === 'GPU Energy (J)') gpu += value;
           if (metricName === 'RAM Energy (J)') ram += value;
           if (metricName === 'Carbon Emissions (gCO2)') co2 += value;
         });
-  
+
         Object.values(metricsByName).forEach(arr =>
           arr.forEach((d, i) => (d.index = i + 1))
         );
-  
+
         setMetrics(metricsByName);
         setTotals({ cpu, gpu, ram, co2 });
       } catch (err) {
         console.error('Error loading CSV:', err);
       }
     };
-  
+
     loadCSV();
   }, []);
-  
 
   const renderEnergyAndFacts = () => {
     const pieData = [
@@ -148,14 +147,14 @@ const ConversationReport = () => {
       <div style={{ padding: '20px' }}>
         <p><strong>Total {metricName}:</strong> {total} over {totalTime} seconds</p>
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={data} margin={{ top: 20, right: 30, left: 80, bottom: 40 }}>
+          <BarChart data={data} margin={{ top: 20, right: 30, left: 80, bottom: 40 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="index" label={{ value: 'Prompt Index', position: 'outsideBottom', offset: 10, dy: 20 }} />
             <YAxis label={{ value: metricName, angle: -90, position: 'insideLeft', dx: -20, dy: 70 }} />
             <Tooltip />
             <Legend verticalAlign="top" align="right" />
-            <Line type="monotone" dataKey="value" stroke="#8884d8" name="Metric Value" />
-          </LineChart>
+            <Bar dataKey="value" fill="#8884d8" name="Metric Value" />
+          </BarChart>
         </ResponsiveContainer>
 
         <div style={{ marginTop: '30px' }}>
