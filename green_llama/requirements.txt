@@ -1,10 +1,9 @@
-psutil
-pynvml
-rich
-pyfiglet
-matplotlib
-ollama
-datasets
-requests
-unittest
-numpy
+psutil == 5.9.0
+pynvml == 12.0.0
+rich == 13.9.4
+pyfiglet == 1.0.2
+matplotlib == 3.10.0
+ollama == 0.4.7
+datasets == 3.4.1
+requests == 2.32.3
+numpy== 2.2.2
