@@ -1,4 +1,4 @@
-# SSE_EnergyMeasurement_Part2
+# Green_llama
 
 # Green Llama: Ollama Performance Monitor
 
